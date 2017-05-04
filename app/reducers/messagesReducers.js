@@ -18,12 +18,18 @@ export function focusedThread (state = {}, action) {
         id: action.focusedThread.id,
         title: action.focusedThread.title,
         users: action.focusedThread.users,
-        messages: action.focusedThread.messages
+        messages: action.focusedThread.messages,
+        oldestMsgKey: action.focusedThread.oldestMsgKey
       })
     case types.LOAD_NEW_MESSAGES_SUCCESS:
-      var newState = Object.assign({}, state)
-      newState.messages = {...state.messages, ...action.newMessages}
-      return newState
+      return Object.assign({}, state, {
+        messages: {...state.messages, ...action.newMessage}
+      })
+    case types.LOAD_OLD_MESSAGES_SUCCESS:
+      return Object.assign({}, state, {
+        messages: {...action.oldMessages.messages, ...state.messages},
+        oldestMsgKey: action.oldMessages.oldestMsgKey
+      })
     default:
       return state
   }

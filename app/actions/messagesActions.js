@@ -9,10 +9,10 @@ export function initialLoadMessages (threadInfo) {
     try {
       dispatch({type: types.INITIAL_LOAD_MESSAGES_ATTEMPT})
       var last20MsgRef = db.ref('/messages/' + threadInfo.id).limitToLast(20)
-      // var last20MsgRef = db.ref('/messages/' + threadInfo.id)
       let last20Msg = await last20MsgRef.once('value')
       var focusedThread = Object.assign({}, threadInfo)
       focusedThread.messages = last20Msg.val()
+      focusedThread.oldestMsgKey = Object.keys(last20Msg.val())[0]
       dispatch({type: types.INITIAL_LOAD_MESSAGES_SUCCESS, focusedThread})
       dispatch(NavigationActions.navigate({routeName: 'Message', params: {title: focusedThread.title}}))
     } catch (err) {
@@ -28,13 +28,34 @@ export function loadNewMessages (threadInfo) {
       dispatch({type: types.LOAD_NEW_MESSAGES_ATTEMPT})
       var threadRef = db.ref('/messages/' + threadInfo.id).limitToLast(1)
       threadRef.on('child_added', function (data) {
-        var newMessages = {}
-        newMessages[data.key] = data.val()
-        dispatch({type: types.LOAD_NEW_MESSAGES_SUCCESS, newMessages})
+        var newMessage = {}
+        newMessage[data.key] = data.val()
+        dispatch({type: types.LOAD_NEW_MESSAGES_SUCCESS, newMessage})
       })
     } catch (err) {
       console.log(err)
       dispatch({type: types.LOAD_NEW_MESSAGES_FAILURE})
+    }
+  }
+}
+
+export function loadOldMessages (threadId, oldestMsgKey) {
+  return function (dispatch) {
+    try {
+      dispatch({type: types.LOAD_OLD_MESSAGES_ATTEMPT})
+      var threadRef = db.ref('/messages/' + threadId).orderByKey().endAt(oldestMsgKey).limitToLast(21)
+      threadRef.once('value', function (snapshot) {
+        var oldMessages = {
+          messages: snapshot.val(),
+          oldestMsgKey: Object.keys(snapshot.val())[0]
+        }
+        delete oldMessages['messages'][oldestMsgKey]
+        console.log('newMessages object', oldMessages)
+        dispatch({type: types.LOAD_OLD_MESSAGES_SUCCESS, oldMessages})
+      })
+    } catch (err) {
+      console.log(err)
+      dispatch({type: types.LOAD_OLD_MESSAGES_FAILURE})
     }
   }
 }

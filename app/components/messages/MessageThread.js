@@ -97,7 +97,7 @@ class MessageThread extends Component {
             onLayout={(e) => { this.setState({scrollViewHeight: e.nativeEvent.layout.height, screenWidth: e.nativeEvent.layout.width}) }}
           >
             <Button
-              onPress={() => console.log('Load previous messages')}
+              onPress={() => this.props.loadOldMessages(this.props.focusedThread.id, this.props.focusedThread.oldestMsgKey)}
               title={'Load previous messages'}
             />
             <ListView
