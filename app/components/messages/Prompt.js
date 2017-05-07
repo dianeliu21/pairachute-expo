@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import {
   Text,
-  TouchableHighlight,
   View
 } from 'react-native'
 import MaterialInitials from 'react-native-material-initials/native'

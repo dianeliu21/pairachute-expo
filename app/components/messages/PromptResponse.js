@@ -20,7 +20,10 @@ class PromptResponse extends Component {
 
   render () {
     return (
-      <TouchableHighlight onPress={() => this._handlePress()}>
+      <TouchableHighlight
+        onPress={() => this._handlePress()}
+        underlayColor={'rgba(255,255,255,0)'}
+      >
         <View style={[styles.promptResponseItem, this.state.pressed ? styles.responsePressed : null]}>
           <Text>{this.props.responseText}</Text>
         </View>

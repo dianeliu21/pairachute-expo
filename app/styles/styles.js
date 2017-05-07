@@ -86,7 +86,13 @@ const styles = StyleSheet.create({
   messageListTextWrapper: {
     paddingLeft: 10
   },
-
+  loadOldMessageButton: {
+    alignSelf: 'center',
+    borderColor: constants.mediumGray,
+    borderWidth: 1,
+    margin: 10,
+    padding: 10
+  },
   // Message Bubble
   receivedMsgBubbleWrapperNoAvatar: {
     marginLeft: 40

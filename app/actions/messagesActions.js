@@ -9,14 +9,15 @@ export function loadMessages (threadInfo) {
     try {
       // load existing messages
       dispatch({type: types.INITIAL_LOAD_MESSAGES_ATTEMPT})
-      var msgRef = db.ref('/messages/' + threadInfo.id).limitToLast(100)
+      var msgRef = db.ref('/messages/' + threadInfo.id).limitToLast(20)
       let msgObject = await msgRef.once('value')
-      var messages = Object.keys(msgObject.val()).map(function (key) {
+      var msgs = Object.keys(msgObject.val()).map(function (key) {
         return Object.assign({}, msgObject.val()[key], {key: key})
       })
+      console.log('initially setting oldest key as ', msgs[0].key)
       var focusedThread = Object.assign({}, threadInfo, {
-        messages: messages.reverse(),
-        oldestMsgKey: messages.length > 0 ? messages[0].key : null
+        oldestMsgKey: msgs.length > 0 ? msgs[0].key : null,
+        messages: msgs.reverse()
       })
       dispatch({type: types.INITIAL_LOAD_MESSAGES_SUCCESS, focusedThread})
       dispatch(NavigationActions.navigate({routeName: 'Message', params: {title: focusedThread.title}}))
@@ -41,19 +42,20 @@ export function loadMessages (threadInfo) {
 }
 
 export function loadOldMessages (threadId, oldestMsgKey) {
-  return function (dispatch) {
+  return async function (dispatch) {
     try {
       dispatch({type: types.LOAD_OLD_MESSAGES_ATTEMPT})
       var threadRef = db.ref('/messages/' + threadId).orderByKey().endAt(oldestMsgKey).limitToLast(21)
-      threadRef.once('value', function (snapshot) {
-        var oldMessages = {
-          messages: snapshot.val(),
-          oldestMsgKey: Object.keys(snapshot.val())[0]
-        }
-        delete oldMessages['messages'][oldestMsgKey]
-        console.log('newMessages object', oldMessages)
-        dispatch({type: types.LOAD_OLD_MESSAGES_SUCCESS, oldMessages})
+      let msgObject = await threadRef.once('value')
+      var msgs = Object.keys(msgObject.val()).map(function (key) {
+        return Object.assign({}, msgObject.val()[key], {key: key})
       })
+      msgs.pop()
+      var oldMessages = {
+        oldestMsgKey: msgs.length > 0 ? msgs[0].key : null,
+        messages: msgs.reverse()
+      }
+      dispatch({type: types.LOAD_OLD_MESSAGES_SUCCESS, oldMessages})
     } catch (err) {
       console.log(err)
       dispatch({type: types.LOAD_OLD_MESSAGES_FAILURE})

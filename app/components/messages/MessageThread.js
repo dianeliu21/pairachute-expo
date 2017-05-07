@@ -3,7 +3,9 @@ import {
   Button,
   FlatList,
   KeyboardAvoidingView,
+  Text,
   TextInput,
+  TouchableHighlight,
   View
 } from 'react-native'
 import MessageBubble from './MessageBubble'
@@ -25,44 +27,10 @@ class MessageThread extends Component {
     title: navigation.state.params.title
   })
 
-  componentDidUpdate () {
-    // this._flatList.scrollToEnd({animated: false})
-  }
-
   // componentWillReceiveProps (nextProps) {
   //   if (this.props !== nextProps && nextProps.focusedThread.messages) {
   //     this._prepareMessages(nextProps.focusedThread.messages)
   //   }
-  // }
-
-  // _prepareMessages (messages = this.props.focusedThread.messages) {
-  //   var messagesArray = []
-  //   if (messages) {
-  //     var prevSenderId = null
-  //     var prevMessageTimestamp = null
-  //     var prevMessageKey = null
-  //     for (var key in messages) {
-  //       messages[key].prev_sender_id = prevSenderId
-  //       messages[key].prev_message_timestamp = prevMessageTimestamp
-  //       prevSenderId = messages[key].sender_id
-  //       prevMessageTimestamp = messages[key].timestamp
-  //
-  //       messages[key].next_sender_id = null
-  //       messages[key].next_message_timestamp = null
-  //
-  //       if (prevMessageKey) {
-  //         messages[prevMessageKey].next_sender_id = messages[key].sender_id
-  //         messages[prevMessageKey].next_message_timestamp = messages[key].timestamp
-  //       }
-  //       prevMessageKey = key
-  //     }
-  //     messagesArray = Object.keys(messages).map(function (e) {
-  //       return Object.assign({}, messages[e], {
-  //         key: e
-  //       })
-  //     })
-  //   }
-  //   this.setState({data: messagesArray})
   // }
 
   _displayMessage (data) {
@@ -73,11 +41,15 @@ class MessageThread extends Component {
     }
   }
 
-  _renderHeader = () => {
-    return <Button
+  _renderLoadOldMessages = () => {
+    return <TouchableHighlight
       onPress={() => this.props.loadOldMessages(this.props.focusedThread.id, this.props.focusedThread.oldestMsgKey)}
-      title={'Load previous messages'}
-    />
+      underlayColor={'rgba(255,255,255,0)'}
+    >
+      <View style={[styles.inverted, styles.loadOldMessageButton]}>
+        <Text>Load previous messages</Text>
+      </View>
+    </TouchableHighlight>
   }
 
   _sendMessage (text, senderUid, threadId) {
@@ -87,25 +59,6 @@ class MessageThread extends Component {
     })
   }
 
-  // <ScrollView
-  //   ref={(component) => this.scrollView = component}
-  //   onContentSizeChange={(contentWidth, contentHeight) => { this.setState({listHeight: contentHeight}) }}
-  //   onLayout={(e) => { this.setState({scrollViewHeight: e.nativeEvent.layout.height, screenWidth: e.nativeEvent.layout.width}) }}
-  // >
-  //   <Button
-  //     onPress={() => this.props.loadOldMessages(this.props.focusedThread.id, this.props.focusedThread.oldestMsgKey)}
-  //     title={'Load previous messages'}
-  //   />
-  //   <ListView
-  //     dataSource={this.state.dataSource}
-  //     enableEmptySections
-  //     renderRow={(data) => this._displayMessage(data)}
-  //   />
-  // </ScrollView>
-
-  // onRefresh={() => this.props.loadOldMessages(this.props.focusedThread.id, this.props.focusedThread.oldestMsgKey)}
-  // refreshing={false}
-
   render () {
     return (
       <KeyboardAvoidingView behavior={this.state.behavior} style={styles.wrapper} keyboardVerticalOffset={60}>
@@ -114,6 +67,7 @@ class MessageThread extends Component {
           style={styles.wrapper}>
           <FlatList
             data={this.props.focusedThread.messages}
+            ListFooterComponent={this._renderLoadOldMessages}
             ref={(component) => this._flatList = component}
             renderItem={(data) => this._displayMessage(data)}
             style={styles.inverted}
