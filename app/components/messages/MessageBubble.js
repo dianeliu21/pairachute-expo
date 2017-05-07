@@ -38,15 +38,15 @@ class MessageBubble extends Component {
   }
 
   _isOwnMessage () {
-    return this.props.message.sender_id === this.props.sender_id
+    return this.props.message.senderId === this.props.sender_id
   }
 
   _isSameSenderAsNext () {
-    return this.props.message.sender_id === this.props.message.next_sender_id
+    return this.props.message.senderId === this.props.message.nextSenderId
   }
 
   _isSameSenderAsPrev () {
-    return this.props.message.sender_id === this.props.message.prev_sender_id
+    return this.props.message.senderId === this.props.message.prevSenderId
   }
 
   render () {

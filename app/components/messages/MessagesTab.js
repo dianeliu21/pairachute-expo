@@ -23,7 +23,7 @@ class MessagesTab extends Component {
   render () {
     return (
       <View style={styles.wrapper}>
-        <MessagesList initialLoadMessages={this.props.initialLoadMessages} loadNewMessages={this.props.loadNewMessages} dataSource={this.props.threads.threads} />
+        <MessagesList loadMessages={this.props.loadMessages} dataSource={this.props.threads.threads} />
       </View>
     )
   }

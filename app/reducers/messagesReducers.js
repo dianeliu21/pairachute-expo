@@ -19,16 +19,19 @@ export function focusedThread (state = {}, action) {
         title: action.focusedThread.title,
         users: action.focusedThread.users,
         messages: action.focusedThread.messages,
-        oldestMsgKey: action.focusedThread.oldestMsgKey
+        oldestMsgKey: action.focusedThread.oldestMsgKey,
+        latestAction: 'new'
       })
     case types.LOAD_NEW_MESSAGES_SUCCESS:
       return Object.assign({}, state, {
-        messages: {...state.messages, ...action.newMessage}
+        messages: state.messages.length > 0 && state.messages[0].key !== action.newMessage[0].key ? action.newMessage.concat(state.messages) : state.messages,
+        latestAction: 'new'
       })
     case types.LOAD_OLD_MESSAGES_SUCCESS:
       return Object.assign({}, state, {
         messages: {...action.oldMessages.messages, ...state.messages},
-        oldestMsgKey: action.oldMessages.oldestMsgKey
+        oldestMsgKey: action.oldMessages.oldestMsgKey,
+        latestAction: 'old'
       })
     default:
       return state

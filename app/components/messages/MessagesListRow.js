@@ -26,15 +26,10 @@ class MessagesListRow extends Component {
     }
   }
 
-  _loadMessage () {
-    this.props.initialLoadMessages(this.props.thread_info)
-    this.props.loadNewMessages(this.props.thread_info)
-  }
-
   render () {
     return (
       <TouchableHighlight
-        onPress={() => this._loadMessage()}
+        onPress={() => this.props.loadMessages(this.props.thread_info)}
         underlayColor={'rgba(0,0,0,0.5)'}
       >
         <View style={styles.messageListRow}>

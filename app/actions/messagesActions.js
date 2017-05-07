@@ -4,37 +4,38 @@ import fb from '../config/initializeFirebase'
 
 var db = fb.database()
 
-export function initialLoadMessages (threadInfo) {
+export function loadMessages (threadInfo) {
   return async function (dispatch) {
     try {
+      // load existing messages
       dispatch({type: types.INITIAL_LOAD_MESSAGES_ATTEMPT})
-      var last20MsgRef = db.ref('/messages/' + threadInfo.id).limitToLast(20)
-      let last20Msg = await last20MsgRef.once('value')
-      var focusedThread = Object.assign({}, threadInfo)
-      focusedThread.messages = last20Msg.val()
-      focusedThread.oldestMsgKey = Object.keys(last20Msg.val())[0]
+      var msgRef = db.ref('/messages/' + threadInfo.id).limitToLast(100)
+      let msgObject = await msgRef.once('value')
+      var messages = Object.keys(msgObject.val()).map(function (key) {
+        return Object.assign({}, msgObject.val()[key], {key: key})
+      })
+      var focusedThread = Object.assign({}, threadInfo, {
+        messages: messages.reverse(),
+        oldestMsgKey: messages.length > 0 ? messages[0].key : null
+      })
       dispatch({type: types.INITIAL_LOAD_MESSAGES_SUCCESS, focusedThread})
       dispatch(NavigationActions.navigate({routeName: 'Message', params: {title: focusedThread.title}}))
-    } catch (err) {
-      console.log(err)
-      dispatch({type: types.INITIAL_LOAD_MESSAGES_FAILURE})
-    }
-  }
-}
 
-export function loadNewMessages (threadInfo) {
-  return function (dispatch) {
-    try {
-      dispatch({type: types.LOAD_NEW_MESSAGES_ATTEMPT})
-      var threadRef = db.ref('/messages/' + threadInfo.id).limitToLast(1)
-      threadRef.on('child_added', function (data) {
-        var newMessage = {}
-        newMessage[data.key] = data.val()
-        dispatch({type: types.LOAD_NEW_MESSAGES_SUCCESS, newMessage})
-      })
+      // listen for new messages
+      try {
+        dispatch({type: types.LOAD_NEW_MESSAGES_ATTEMPT})
+        var newMsgRef = db.ref('/messages/' + threadInfo.id).limitToLast(1)
+        newMsgRef.on('child_added', function (data) {
+          var newMessage = [Object.assign({}, data.val(), {key: data.key})]
+          dispatch({type: types.LOAD_NEW_MESSAGES_SUCCESS, newMessage})
+        })
+      } catch (err) {
+        console.log('loadNewMessages error', err)
+        dispatch({type: types.LOAD_NEW_MESSAGES_FAILURE})
+      }
     } catch (err) {
-      console.log(err)
-      dispatch({type: types.LOAD_NEW_MESSAGES_FAILURE})
+      console.log('loadMessages error', err)
+      dispatch({type: types.INITIAL_LOAD_MESSAGES_FAILURE})
     }
   }
 }
@@ -63,7 +64,7 @@ export function loadOldMessages (threadId, oldestMsgKey) {
 export function loadThreadList () {
   return async function (dispatch) {
     try {
-      dispatch(loadThreadListAttempt())
+      dispatch({type: types.LOAD_THREAD_LIST_ATTEMPT})
 
       let uid = fb.auth().currentUser.uid
       var userThreadsRef = db.ref('/users/' + uid + '/threads')
@@ -94,11 +95,11 @@ export function loadThreadList () {
             title: title
           })
         }
-        dispatch(loadThreadListSuccess(threads))
+        dispatch({type: types.LOAD_THREAD_LIST_SUCCESS, threads})
       })
     } catch (err) {
       console.log(err)
-      dispatch(loadThreadListFailure())
+      dispatch({type: types.LOAD_THREAD_LIST_FAILURE})
     }
   }
 }
@@ -106,79 +107,33 @@ export function loadThreadList () {
 export function sendMessage (message, senderId, threadId) {
   return async function (dispatch) {
     try {
-      dispatch(sendMessageAttempt())
-      var msgData = {
-        message: message,
-        sender_id: senderId,
-        timestamp: Date.now()
-      }
+      dispatch({type: types.SEND_MESSAGE_ATTEMPT})
+      let prevMsg = await db.ref('/messages/' + threadId).limitToLast(1).once('value')
+      var prevMsgKey = Object.keys(prevMsg.val())[0]
+      var updatedPrevMsg = Object.assign({}, prevMsg.val()[prevMsgKey], {
+        nextSenderId: senderId,
+        nextMessageTimestamp: Date.now()
+      })
 
       var newMsgKey = db.ref('/messages').push().key
+      var newMsgData = {
+        message: message,
+        senderId: senderId,
+        timestamp: Date.now(),
+        prevSenderId: updatedPrevMsg.senderId,
+        prevMessageTimestamp: updatedPrevMsg.timestamp
+      }
+
       var updates = {}
-      updates['/messages/' + threadId + '/' + newMsgKey] = msgData
-      updates['/threads/' + threadId + '/last_message'] = msgData
+      updates['/messages/' + threadId + '/' + prevMsgKey] = updatedPrevMsg
+      updates['/messages/' + threadId + '/' + newMsgKey] = newMsgData
+      updates['/threads/' + threadId + '/last_message'] = newMsgData
 
       await db.ref().update(updates)
-      dispatch(sendMessageSuccess())
+      dispatch({type: types.SEND_MESSAGE_SUCCESS})
     } catch (err) {
       console.log(err)
-      dispatch(sendMessageFailure())
+      dispatch({type: types.SEND_MESSAGE_FAILURE})
     }
-  }
-}
-
-// function loadMessagesAttempt () {
-//   return {
-//     type: types.LOAD_MESSAGES_ATTEMPT
-//   }
-// }
-//
-// function loadMessagesSuccess (threadInfo) {
-//   return {
-//     type: types.LOAD_MESSAGES_SUCCESS,
-//     threadInfo
-//   }
-// }
-//
-// function loadMessagesFailure () {
-//   return {
-//     type: types.LOAD_MESSAGES_FAILURE
-//   }
-// }
-
-function loadThreadListAttempt () {
-  return {
-    type: types.LOAD_THREAD_LIST_ATTEMPT
-  }
-}
-
-function loadThreadListSuccess (threads) {
-  return {
-    type: types.LOAD_THREAD_LIST_SUCCESS,
-    threads
-  }
-}
-
-function loadThreadListFailure () {
-  return {
-    type: types.LOAD_THREAD_LIST_FAILURE
-  }
-}
-
-function sendMessageAttempt () {
-  return {
-    type: types.SEND_MESSAGE_ATTEMPT
-  }
-}
-
-function sendMessageSuccess () {
-  return {
-    type: types.SEND_MESSAGE_SUCCESS
-  }
-}
-
-function sendMessageFailure () {
-  return {
-    type: types.SEND_MESSAGE_FAILURE
   }
 }

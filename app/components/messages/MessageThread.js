@@ -1,9 +1,8 @@
 import React, {Component} from 'react'
 import {
   Button,
+  FlatList,
   KeyboardAvoidingView,
-  ListView,
-  ScrollView,
   TextInput,
   View
 } from 'react-native'
@@ -14,14 +13,10 @@ const styles = require('../../styles/styles.js')
 class MessageThread extends Component {
   constructor (props) {
     super(props)
-    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
     this.state = {
       behavior: 'padding',
-      dataSource: ds.cloneWithRows(this.prepareMessages()),
-      listHeight: 0,
-      numMessagesShown: 20,
+      data: [],
       screenWidth: 0,
-      scrollViewHeight: 0,
       text: ''
     }
   }
@@ -30,54 +25,63 @@ class MessageThread extends Component {
     title: navigation.state.params.title
   })
 
+  // componentWillMount () {
+  //   this._prepareMessages()
+  // }
+
   componentDidUpdate () {
-    // calculate bottom
-    const bottomOfList = this.state.listHeight - this.state.scrollViewHeight
-    // tell the scrollView component to scroll to it
-    this.scrollView.scrollTo({ y: bottomOfList, animated: false })
+    // this._flatList.scrollToEnd({animated: false})
   }
 
-  componentWillReceiveProps (nextProps) {
-    if (this.props !== nextProps && nextProps.focusedThread.messages) {
-      const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
-      this.setState({
-        dataSource: ds.cloneWithRows(this.prepareMessages(nextProps.focusedThread.messages))
-      })
-    }
-  }
+  // componentWillReceiveProps (nextProps) {
+  //   if (this.props !== nextProps && nextProps.focusedThread.messages) {
+  //     this._prepareMessages(nextProps.focusedThread.messages)
+  //   }
+  // }
 
-  prepareMessages (messages = this.props.focusedThread.messages) {
-    if (messages) {
-      var prevSenderId = null
-      var prevMessageTimestamp = null
-      var prevMessageKey = null
-      for (var key in messages) {
-        messages[key].prev_sender_id = prevSenderId
-        messages[key].prev_message_timestamp = prevMessageTimestamp
-        prevSenderId = messages[key].sender_id
-        prevMessageTimestamp = messages[key].timestamp
-
-        messages[key].next_sender_id = null
-        messages[key].next_message_timestamp = null
-
-        if (prevMessageKey) {
-          messages[prevMessageKey].next_sender_id = messages[key].sender_id
-          messages[prevMessageKey].next_message_timestamp = messages[key].timestamp
-        }
-        prevMessageKey = key
-      }
-      return messages
-    } else {
-      return []
-    }
-  }
+  // _prepareMessages (messages = this.props.focusedThread.messages) {
+  //   var messagesArray = []
+  //   if (messages) {
+  //     var prevSenderId = null
+  //     var prevMessageTimestamp = null
+  //     var prevMessageKey = null
+  //     for (var key in messages) {
+  //       messages[key].prev_sender_id = prevSenderId
+  //       messages[key].prev_message_timestamp = prevMessageTimestamp
+  //       prevSenderId = messages[key].sender_id
+  //       prevMessageTimestamp = messages[key].timestamp
+  //
+  //       messages[key].next_sender_id = null
+  //       messages[key].next_message_timestamp = null
+  //
+  //       if (prevMessageKey) {
+  //         messages[prevMessageKey].next_sender_id = messages[key].sender_id
+  //         messages[prevMessageKey].next_message_timestamp = messages[key].timestamp
+  //       }
+  //       prevMessageKey = key
+  //     }
+  //     messagesArray = Object.keys(messages).map(function (e) {
+  //       return Object.assign({}, messages[e], {
+  //         key: e
+  //       })
+  //     })
+  //   }
+  //   this.setState({data: messagesArray})
+  // }
 
   _displayMessage (data) {
-    if (data.sender_id === 'prompt') {
-      return (<Prompt data={data} />)
+    if (data.item.sender_id === 'prompt') {
+      return (<Prompt data={data.item} />)
     } else {
-      return (<MessageBubble users={this.props.focusedThread.users} sender_id={this.props.user.uid} message={data} />)
+      return (<MessageBubble users={this.props.focusedThread.users} sender_id={this.props.user.uid} message={data.item} />)
     }
+  }
+
+  _renderHeader = () => {
+    return <Button
+      onPress={() => this.props.loadOldMessages(this.props.focusedThread.id, this.props.focusedThread.oldestMsgKey)}
+      title={'Load previous messages'}
+    />
   }
 
   _sendMessage (text, senderUid, threadId) {
@@ -87,25 +91,36 @@ class MessageThread extends Component {
     })
   }
 
+  // <ScrollView
+  //   ref={(component) => this.scrollView = component}
+  //   onContentSizeChange={(contentWidth, contentHeight) => { this.setState({listHeight: contentHeight}) }}
+  //   onLayout={(e) => { this.setState({scrollViewHeight: e.nativeEvent.layout.height, screenWidth: e.nativeEvent.layout.width}) }}
+  // >
+  //   <Button
+  //     onPress={() => this.props.loadOldMessages(this.props.focusedThread.id, this.props.focusedThread.oldestMsgKey)}
+  //     title={'Load previous messages'}
+  //   />
+  //   <ListView
+  //     dataSource={this.state.dataSource}
+  //     enableEmptySections
+  //     renderRow={(data) => this._displayMessage(data)}
+  //   />
+  // </ScrollView>
+
+  // onRefresh={() => this.props.loadOldMessages(this.props.focusedThread.id, this.props.focusedThread.oldestMsgKey)}
+  // refreshing={false}
+
   render () {
     return (
       <KeyboardAvoidingView behavior={this.state.behavior} style={styles.wrapper} keyboardVerticalOffset={60}>
-        <View style={styles.wrapper}>
-          <ScrollView
-            ref={(component) => this.scrollView = component}
-            onContentSizeChange={(contentWidth, contentHeight) => { this.setState({listHeight: contentHeight}) }}
-            onLayout={(e) => { this.setState({scrollViewHeight: e.nativeEvent.layout.height, screenWidth: e.nativeEvent.layout.width}) }}
-          >
-            <Button
-              onPress={() => this.props.loadOldMessages(this.props.focusedThread.id, this.props.focusedThread.oldestMsgKey)}
-              title={'Load previous messages'}
-            />
-            <ListView
-              dataSource={this.state.dataSource}
-              enableEmptySections
-              renderRow={(data) => this._displayMessage(data)}
-            />
-          </ScrollView>
+        <View
+          onLayout={(e) => { this.setState({screenWidth: e.nativeEvent.layout.width}) }}
+          style={styles.wrapper}>
+          <FlatList
+            data={this.props.focusedThread.messages}
+            ref={(component) => this._flatList = component}
+            renderItem={(data) => this._displayMessage(data)}
+          />
         </View>
         <View style={styles.messageInputView}>
           <TextInput
