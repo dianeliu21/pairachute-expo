@@ -1,5 +1,6 @@
 const React = require('react-native')
-const {StyleSheet} = React
+const { StyleSheet } = React
+const constants = require('./constants.js')
 
 const styles = StyleSheet.create({
   // General Styles
@@ -19,6 +20,9 @@ const styles = StyleSheet.create({
   },
 
   // Login/Signup and Auth
+  authButton: {
+    margin: 5
+  },
   authErrorText: {
     color: 'red',
     textAlign: 'center',
@@ -52,9 +56,12 @@ const styles = StyleSheet.create({
     opacity: 1
   },
 
-  ///////////////
   // Messaging //
-  ///////////////
+  inverted: {
+    transform: [
+      {scaleY: -1}
+    ]
+  },
 
   // Message List
   messageListContainer: {
@@ -114,7 +121,8 @@ const styles = StyleSheet.create({
     color: 'gray',
     fontSize: 12,
     marginBottom: 2,
-    marginLeft: 45
+    marginLeft: 45,
+    marginTop: 5
   },
   receivedMessageText: {
     color: 'black',
@@ -127,8 +135,7 @@ const styles = StyleSheet.create({
   },
   sentMessageText: {
     color: 'white',
-    fontSize: 16,
-    textAlign: 'right'
+    fontSize: 16
   },
 
   // Message input
@@ -150,8 +157,9 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderColor: '#d3d3d3',
     borderTopWidth: 1,
-    margin: 5,
-    padding: 10
+    marginBottom: 20,
+    marginTop: 20,
+    padding: 20
   },
   promptHeading: {
     color: 'grey',
@@ -162,6 +170,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     marginBottom: 5
+  },
+  promptResponseItem: {
+    borderColor: constants.mediumGray,
+    borderRadius: 10,
+    borderWidth: 1,
+    margin: 5,
+    padding: 10
+  },
+  promptTextContainer: {
+    padding: 10
+  },
+  responsePressed: {
+    backgroundColor: constants.mediumGray
   }
 })
 

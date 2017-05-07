@@ -6,24 +6,24 @@ import { signup, switchSignupToLogin } from '../../actions/authActions'
 import React, { Component } from 'react'
 import {
   Button,
-  KeyboardAvoidingView,
-  ScrollView,
   Text,
-  TextInput
+  TextInput,
+  View
 } from 'react-native'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 const styles = require('../../styles/styles.js')
 
 export class Signup extends Component {
   constructor (props) {
     super(props)
     this.state = {
+      email: '',
       first_name: '',
       last_name: '',
-      email: '',
-      phone_number: '',
       password: '',
       passwordMatch: true,
-      behavior: 'padding'
+      phone_number: '',
+      screenWidth: 0
     }
   }
 
@@ -37,48 +37,55 @@ export class Signup extends Component {
 
   render () {
     return (
-      <KeyboardAvoidingView behavior={this.state.behavior} style={styles.wrapper}>
-        <ScrollView contentContainerStyle={styles.container}>
+      <KeyboardAwareScrollView
+        contentContainerStyle={styles.wrapper}
+        resetScrollToCoords={{x: 0, y: 0}}
+        style={{backgroundColor: 'white'}}
+      >
+        <View
+          onLayout={(e) => { this.setState({screenWidth: e.nativeEvent.layout.width}) }}
+          style={styles.container}
+        >
           <Text style={styles.authTitle}>New Account</Text>
           <Text style={styles.authErrorText}>{this.props.authState.errorMessage}</Text>
           <TextInput
             onChangeText={(firstName) => this.setState({first_name: firstName})}
-            placeholder='First Name'
-            style={styles.authInput}
+            placeholder={'First Name'}
+            style={[styles.authInput, {width: this.state.screenWidth - 20}]}
           />
           <TextInput
             onChangeText={(lastName) => this.setState({last_name: lastName})}
-            placeholder='Last Name'
-            style={styles.authInput}
+            placeholder={'Last Name'}
+            style={[styles.authInput, {width: this.state.screenWidth - 20}]}
           />
           <TextInput
             onChangeText={(email) => this.setState({email})}
-            placeholder='Email Address'
-            style={styles.authInput}
+            placeholder={'Email Address'}
+            style={[styles.authInput, {width: this.state.screenWidth - 20}]}
           />
           <TextInput
             onChangeText={(phoneNumber) => this.setState({phone_number: phoneNumber})}
-            placeholder='Phone Number'
-            style={styles.authInput}
+            placeholder={'Phone Number'}
+            style={[styles.authInput, {width: this.state.screenWidth - 20}]}
           />
           <TextInput
             onChangeText={(password) => this.setState({password})}
-            placeholder='Password'
+            placeholder={'Password'}
             secureTextEntry
-            style={styles.authInput}
+            style={[styles.authInput, {width: this.state.screenWidth - 20}]}
           />
           <TextInput
             onChangeText={(password2) => this.verifyPassword(password2)}
-            placeholder='Verify Password'
+            placeholder={'Verify Password'}
             secureTextEntry
-            style={[styles.authInput, this.state.passwordMatch ? null : styles.authInputIncorrect]}
+            style={[styles.authInput, this.state.passwordMatch ? null : styles.authInputIncorrect, {width: this.state.screenWidth - 20}]}
           />
           <Button
             onPress={() => this.props.signup(this.state.first_name, this.state.last_name, this.state.email, this.state.phone_number, this.state.password)}
-            title='Sign Up'
+            title={'Sign Up'}
           />
-        </ScrollView>
-      </KeyboardAvoidingView>
+        </View>
+      </KeyboardAwareScrollView>
     )
   }
 }

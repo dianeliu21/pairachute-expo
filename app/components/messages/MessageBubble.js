@@ -10,7 +10,7 @@ const styles = require('../../styles/styles.js')
 class MessageBubble extends Component {
   _getAvatar () {
     return !this._isOwnMessage() && !this._isSameSenderAsNext()
-      ? (<MaterialInitials backgroundColor={constants.mediumGray} color={'white'} single={false} size={constants.messageAvatarSize} style={styles.messageAvatar} text={this.props.users[this.props.message.sender_id] || ''} />)
+      ? (<MaterialInitials backgroundColor={constants.mediumGray} color={'white'} single={false} size={constants.messageAvatarSize} style={styles.messageAvatar} text={this.props.users[this.props.message.senderId] || ''} />)
       : null
   }
 
@@ -24,7 +24,7 @@ class MessageBubble extends Component {
 
   _getSenderName () {
     return !this._isOwnMessage() && !this._isSameSenderAsPrev()
-     ? (<Text style={styles.receivedMessageSender}>{this.props.users[this.props.message.sender_id]}</Text>)
+     ? (<Text style={styles.receivedMessageSender}>{this.props.users[this.props.message.senderId]}</Text>)
      : null
   }
 

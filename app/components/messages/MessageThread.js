@@ -25,10 +25,6 @@ class MessageThread extends Component {
     title: navigation.state.params.title
   })
 
-  // componentWillMount () {
-  //   this._prepareMessages()
-  // }
-
   componentDidUpdate () {
     // this._flatList.scrollToEnd({animated: false})
   }
@@ -70,10 +66,10 @@ class MessageThread extends Component {
   // }
 
   _displayMessage (data) {
-    if (data.item.sender_id === 'prompt') {
-      return (<Prompt data={data.item} />)
+    if (data.item.senderId === 'prompt') {
+      return (<View style={styles.inverted}><Prompt data={data.item} /></View>)
     } else {
-      return (<MessageBubble users={this.props.focusedThread.users} sender_id={this.props.user.uid} message={data.item} />)
+      return (<View style={styles.inverted}><MessageBubble users={this.props.focusedThread.users} sender_id={this.props.user.uid} message={data.item} /></View>)
     }
   }
 
@@ -120,6 +116,7 @@ class MessageThread extends Component {
             data={this.props.focusedThread.messages}
             ref={(component) => this._flatList = component}
             renderItem={(data) => this._displayMessage(data)}
+            style={styles.inverted}
           />
         </View>
         <View style={styles.messageInputView}>
