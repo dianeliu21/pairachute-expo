@@ -35,6 +35,7 @@ class MessageBubble extends Component {
       }
       return styles.receivedMsgBubbleWrapperNoAvatar
     }
+    return styles.sentMsgBubbleWrapper
   }
 
   _isOwnMessage () {
@@ -49,15 +50,45 @@ class MessageBubble extends Component {
     return this.props.message.senderId === this.props.message.prevSenderId
   }
 
+  _parseTimestamp () {
+    var time = new Date(this.props.message.timestamp)
+    return time.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})
+  }
+
+  _renderDate () {
+    var currDate = new Date(this.props.message.timestamp)
+    var prevDate = new Date(this.props.message.prevMessageTimestamp)
+    return this.props.message.timestamp - this.props.message.prevMessageTimestamp > 86400000 || currDate.getDay() !== prevDate.getDay()
+      ? <Text style={styles.messageDate}>{currDate.toLocaleDateString([], {weekday: 'short', month: 'short', day: 'numeric', year: 'numeric'})}</Text>
+      : null
+  }
+
+  _renderTimestampLeft () {
+    return this._isOwnMessage()
+      ? (<View>
+        <Text style={styles.messageTimestamp}>{this._parseTimestamp()}</Text>
+      </View>)
+      : null
+  }
+
+  _renderTimestampRight () {
+    return !this._isOwnMessage()
+      ? <View><Text style={styles.messageTimestamp}>{this._parseTimestamp()}</Text></View>
+      : null
+  }
+
   render () {
     return (
       <View>
+        {this._renderDate()}
         {this._getSenderName()}
         <View style={this._getWrapperStyle()}>
           {this._getAvatar()}
+          {this._renderTimestampLeft()}
           <View style={[styles.messageBubble, this._getBubbleStyle()]}>
             <Text style={this._getBubbleTextStyle()}>{this.props.message.message}</Text>
           </View>
+          {this._renderTimestampRight()}
         </View>
       </View>
     )

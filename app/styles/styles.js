@@ -93,33 +93,30 @@ const styles = StyleSheet.create({
     margin: 10,
     padding: 10
   },
+
   // Message Bubble
-  receivedMsgBubbleWrapperNoAvatar: {
-    marginLeft: 40
-  },
-  receivedMsgBubbleWrapperWithAvatar: {
-    alignItems: 'flex-end',
-    flexDirection: 'row',
-    marginLeft: 10
-  },
   messageAvatar: {
     marginBottom: 2
   },
   messageBubble: {
     borderRadius: 10,
     marginTop: 2,
-    marginBottom: 2,
-    marginRight: 10,
-    marginLeft: 10,
-    paddingTop: 5,
-    paddingBottom: 5,
-    paddingLeft: 10,
-    paddingRight: 10
+    padding: 10
+  },
+  messageDate: {
+    color: 'gray',
+    fontSize: 12,
+    marginTop: 15,
+    textAlign: 'center'
+  },
+  messageTimestamp: {
+    color: 'gray',
+    fontSize: 10,
+    margin: 5
   },
   receivedMessage: {
     alignSelf: 'flex-start',
     backgroundColor: '#F1F0F0',
-    marginRight: 100,
     marginLeft: 5
   },
   receivedMessageSender: {
@@ -128,20 +125,40 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginBottom: 2,
     marginLeft: 45,
-    marginTop: 5
+    marginTop: 10
   },
   receivedMessageText: {
     color: 'black',
     fontSize: 16
   },
+  receivedMsgBubbleWrapperNoAvatar: {
+    marginLeft: 40,
+    marginRight: 100,
+    padding: 2
+  },
+  receivedMsgBubbleWrapperWithAvatar: {
+    alignItems: 'flex-end',
+    flexDirection: 'row',
+    marginBottom: 10,
+    marginLeft: 10,
+    marginRight: 100,
+    padding: 2
+  },
   sentMessage: {
     alignSelf: 'flex-end',
-    backgroundColor: '#0084FF',
-    marginLeft: 100
+    backgroundColor: '#0084FF'
   },
   sentMessageText: {
     color: 'white',
     fontSize: 16
+  },
+  sentMsgBubbleWrapper: {
+    alignItems: 'flex-end',
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    marginLeft: 100,
+    marginRight: 10,
+    padding: 2
   },
 
   // Message input
