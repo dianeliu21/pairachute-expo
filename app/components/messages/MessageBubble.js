@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {
   Text,
+  TouchableHighlight,
   View
 } from 'react-native'
 import MaterialInitials from 'react-native-material-initials/native'
@@ -8,46 +9,40 @@ import * as constants from '../../styles/constants.js'
 const styles = require('../../styles/styles.js')
 
 class MessageBubble extends Component {
-  _getAvatar () {
-    return !this._isOwnMessage() && !this._isSameSenderAsNext()
+  constructor (props) {
+    super(props)
+    this.state = {
+      bubblePressed: false
+    }
+    // state variables
+    this.isOwnMessage = this.props.message.senderId === this.props.sender_id
+    this.isSameSenderAsNext = this.props.message.senderId === this.props.message.nextSenderId
+    this.isSameSenderAsPrev = this.props.message.senderId === this.props.message.prevSenderId
+
+    // variables calculated from state
+    this.bubbleStyle = this.isOwnMessage ? styles.sentMessage : styles.receivedMessage
+    this.bubbleTextStyle = this.isOwnMessage ? styles.sentMessageText : styles.receivedMessageText
+    this.timestamp = this._parseTimestamp()
+
+    // components
+    this.date = this._renderDate()
+    this.isSameDayAsNext = !this._notSameDayAsNext()
+    this.avatar = !this.isOwnMessage && (!this.isSameSenderAsNext || (this.isSameSenderAsNext && !this.isSameDayAsNext))
       ? (<MaterialInitials backgroundColor={constants.mediumGray} color={'white'} single={false} size={constants.messageAvatarSize} style={styles.messageAvatar} text={this.props.users[this.props.message.senderId] || ''} />)
       : null
-  }
-
-  _getBubbleStyle () {
-    return this._isOwnMessage() ? styles.sentMessage : styles.receivedMessage
-  }
-
-  _getBubbleTextStyle () {
-    return this._isOwnMessage() ? styles.sentMessageText : styles.receivedMessageText
-  }
-
-  _getSenderName () {
-    return !this._isOwnMessage() && !this._isSameSenderAsPrev()
+    this.senderName = !this.isOwnMessage && (!this.isSameSenderAsPrev || this.date !== null)
      ? (<Text style={styles.receivedMessageSender}>{this.props.users[this.props.message.senderId]}</Text>)
      : null
+
+    this.wrapperStyle = !this.isOwnMessage ? !this.isSameSenderAsNext || this.avatar !== null ? [styles.receivedMsgBubbleWrapper, styles.receivedMsgWithAvatar] : [styles.receivedMsgBubbleWrapper] : styles.sentMsgBubbleWrapper
   }
 
-  _getWrapperStyle () {
-    if (!this._isOwnMessage()) {
-      if (!this._isSameSenderAsNext()) {
-        return styles.receivedMsgBubbleWrapperWithAvatar
-      }
-      return styles.receivedMsgBubbleWrapperNoAvatar
+  componentWillReceiveProps (nextProps) {
+    if (this.props.message !== nextProps.message) {
+      this.timestamp = () => this._parseTimestamp()
+      this.date = () => this._renderDate()
+      this.isSameDayAsNext = () => this._sameDayAsNext()
     }
-    return styles.sentMsgBubbleWrapper
-  }
-
-  _isOwnMessage () {
-    return this.props.message.senderId === this.props.sender_id
-  }
-
-  _isSameSenderAsNext () {
-    return this.props.message.senderId === this.props.message.nextSenderId
-  }
-
-  _isSameSenderAsPrev () {
-    return this.props.message.senderId === this.props.message.prevSenderId
   }
 
   _parseTimestamp () {
@@ -59,12 +54,12 @@ class MessageBubble extends Component {
     var currDate = new Date(this.props.message.timestamp)
     var prevDate = new Date(this.props.message.prevMessageTimestamp)
     return this.props.message.timestamp - this.props.message.prevMessageTimestamp > 86400000 || currDate.getDay() !== prevDate.getDay()
-      ? <Text style={styles.messageDate}>{currDate.toLocaleDateString([], {weekday: 'short', month: 'short', day: 'numeric', year: 'numeric'})}</Text>
+      ? <Text style={styles.messageDate}>{currDate.toLocaleDateString([], {weekday: 'short', month: 'short', day: 'numeric', year: 'numeric'}).toUpperCase()}</Text>
       : null
   }
 
   _renderTimestampLeft () {
-    return this._isOwnMessage()
+    return this.isOwnMessage
       ? (<View>
         <Text style={styles.messageTimestamp}>{this._parseTimestamp()}</Text>
       </View>)
@@ -72,23 +67,41 @@ class MessageBubble extends Component {
   }
 
   _renderTimestampRight () {
-    return !this._isOwnMessage()
+    return !this.isOwnMessage
       ? <View><Text style={styles.messageTimestamp}>{this._parseTimestamp()}</Text></View>
       : null
+  }
+
+  _notSameDayAsNext () {
+    var currDate = new Date(this.props.message.timestamp)
+    var nextDate = new Date(this.props.message.nextMessageTimestamp)
+    return nextDate !== null && (this.props.message.nextMessageTimestamp - this.props.message.timestamp > 86400000 || currDate.getDay() !== nextDate.getDay())
+  }
+
+  _toggleBubblePress () {
+    this.setState({bubblePressed: !this.state.bubblePressed})
   }
 
   render () {
     return (
       <View>
-        {this._renderDate()}
-        {this._getSenderName()}
-        <View style={this._getWrapperStyle()}>
-          {this._getAvatar()}
-          {this._renderTimestampLeft()}
-          <View style={[styles.messageBubble, this._getBubbleStyle()]}>
-            <Text style={this._getBubbleTextStyle()}>{this.props.message.message}</Text>
+        {this.date}
+        {this.senderName}
+        <View style={this.wrapperStyle}>
+          <View>
+            <View style={styles.flexRowEnd}>
+              {this.avatar}
+              <TouchableHighlight
+                onPress={() => this._toggleBubblePress()}
+                underlayColor={'rgba(0,0,0,0)'}
+              >
+                <View style={[styles.messageBubble, this.bubbleStyle]}>
+                  <Text style={this.bubbleTextStyle}>{this.props.message.message}</Text>
+                </View>
+              </TouchableHighlight>
+            </View>
+            {this.state.bubblePressed ? <Text style={styles.messageTimestamp}>{this.timestamp}</Text> : null}
           </View>
-          {this._renderTimestampRight()}
         </View>
       </View>
     )

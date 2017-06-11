@@ -14,7 +14,6 @@ export function loadMessages (threadInfo) {
       var msgs = Object.keys(msgObject.val()).map(function (key) {
         return Object.assign({}, msgObject.val()[key], {key: key})
       })
-      console.log('initially setting oldest key as ', msgs[0].key)
       var focusedThread = Object.assign({}, threadInfo, {
         oldestMsgKey: msgs.length > 0 ? msgs[0].key : null,
         messages: msgs.reverse()
@@ -136,6 +135,73 @@ export function sendMessage (message, senderId, threadId) {
     } catch (err) {
       console.log(err)
       dispatch({type: types.SEND_MESSAGE_FAILURE})
+    }
+  }
+}
+
+export function submitPromptResponse (prompt, response, senderId, threadId) {
+  return async function (dispatch) {
+    try {
+      dispatch({type: types.SUBMIT_PROMPT_RESPONSE_ATTEMPT})
+
+      console.log('inputs', prompt, response, senderId, threadId)
+
+      let prevMsg = await db.ref('/messages/' + threadId).limitToLast(1).once('value')
+      var prevMsgKey = Object.keys(prevMsg.val())[0]
+      var updatedPrevMsg = Object.assign({}, prevMsg.val()[prevMsgKey], {
+        nextSenderId: 'promptResponse',
+        nextMessageTimestamp: Date.now()
+      })
+
+      var promptInfo = {
+        key: prompt.key,
+        message: prompt.message,
+        responseOptions: prompt.responseOptions ? prompt.responseOptions : null
+      }
+
+      var responseInfo = {
+        senderId: senderId,
+      }
+
+      if (promptInfo.responseOptions) {
+        var temp = {}
+        Object.keys(response).forEach(function (bubbleKey) {
+          if (response[bubbleKey] === true) {
+            temp[bubbleKey] = promptInfo.responseOptions[bubbleKey]
+          }
+        })
+        responseInfo['response'] = temp
+      } else {
+        responseInfo['response'] = response
+      }
+
+      let promptObj = await db.ref('/messages/' + threadId + '/' + prompt.key).once('value')
+      var promptUpdate = {}
+      promptUpdate[senderId] = responseInfo.response
+      var updatedPrompt = Object.assign({}, promptObj.val(), {
+        responses: promptObj.val().responses ? Object.assign({}, promptObj.val().responses, promptUpdate) : promptUpdate
+      })
+
+      var newMsgKey = db.ref('/messages').push().key
+      var newMsgData = {
+        type: 'promptResponse',
+        senderId: 'promptResponse',
+        promptInfo: promptInfo,
+        responseInfo: responseInfo,
+        timestamp: Date.now(),
+        prevSenderId: updatedPrevMsg.senderId,
+        prevMessageTimestamp: updatedPrevMsg.timestamp
+      }
+
+      var updates = {}
+      updates['/messages/' + threadId + '/' + prevMsgKey] = updatedPrevMsg
+      updates['/messages/' + threadId + '/' + newMsgKey] = newMsgData
+      updates['/messages/' + threadId + '/' + prompt.key] = updatedPrompt
+
+      await db.ref().update(updates)
+    } catch (err) {
+      console.log(err)
+      dispatch({type: types.SUBMIT_PROMPT_RESPONSE_FAILURE})
     }
   }
 }

@@ -10,6 +10,7 @@ import {
 } from 'react-native'
 import MessageBubble from './MessageBubble'
 import Prompt from './Prompt'
+import PromptResponse from './PromptResponse'
 const styles = require('../../styles/styles.js')
 
 class MessageThread extends Component {
@@ -27,15 +28,11 @@ class MessageThread extends Component {
     title: navigation.state.params.title
   })
 
-  // componentWillReceiveProps (nextProps) {
-  //   if (this.props !== nextProps && nextProps.focusedThread.messages) {
-  //     this._prepareMessages(nextProps.focusedThread.messages)
-  //   }
-  // }
-
   _displayMessage (data) {
     if (data.item.senderId === 'prompt') {
-      return (<View style={styles.inverted}><Prompt data={data.item} /></View>)
+      return (<View style={styles.inverted}><Prompt data={data.item} senderId={this.props.user.uid} submitPromptResponse={this.props.submitPromptResponse} threadId={this.props.focusedThread.id} /></View>)
+    } else if (data.item.senderId === 'promptResponse') {
+      return (<View style={styles.inverted}><PromptResponse users={this.props.focusedThread.users} senderId={this.props.user.uid} submitPromptResponse={this.props.submitPromptResponse} threadId={this.props.focusedThread.id} data={data.item} /></View>)
     } else {
       return (<View style={styles.inverted}><MessageBubble users={this.props.focusedThread.users} sender_id={this.props.user.uid} message={data.item} /></View>)
     }
