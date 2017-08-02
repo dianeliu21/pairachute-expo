@@ -25,13 +25,13 @@ class PromptResponse extends Component {
     }
 
     this.prompt = this.props.data.promptInfo.message.length > 100 ? '"' + this.props.data.promptInfo.message.substr(0, 100) + '..."' : '"' + this.props.data.promptInfo.message + '"'
-    this.promptResponses = this._promptResponses()
+    // this.promptResponses = this._promptResponses()
     this.senderName = this.props.users[this.props.data.responseInfo.senderId]
   }
 
   componentDidMount () {
-    if (this.props.data.responseOptions) {
-      var entries = Object.entries(this.props.data.responseOptions)
+    if (this.props.data.promptInfo.responseOptions) {
+      var entries = Object.entries(this.props.data.promptInfo.responseOptions)
       var bubbles = {}
       var responses = {}
       entries.forEach(function (entry) {
@@ -70,7 +70,7 @@ class PromptResponse extends Component {
     if (this.promptResponses !== null) {
       return (
         <View style={styles.flexColumnCenter}>
-          {this.promptResponses}
+          {this._promptResponses()}
         </View>
       )
     }
@@ -87,9 +87,9 @@ class PromptResponse extends Component {
     )
   }
 
-  _promptResponses = () => {
-    if (this.props.data.responseOptions) {
-      return Object.entries(this.props.data.responseOptions).map(item =>
+  _promptResponses () {
+    if (this.props.data.promptInfo.responseOptions) {
+      return Object.entries(this.props.data.promptInfo.responseOptions).map(item =>
         (<View key={item[0]} style={[styles.promptResponseItem, this.state.pressedBubbles[item[0]] === true ? styles.responsePressed : null]}>
           <TouchableHighlight
             onPress={() => this._toggleBubblePress(item[0], item[1])}
@@ -105,13 +105,26 @@ class PromptResponse extends Component {
 
   _submitPromptResponse () {
     if (this.props.data.promptInfo.responseOptions) {
-      response = this.state.pressedResponses
+      response = this.state.pressedBubbles
     } else {
       response = this.state.promptAnswerText
     }
     this.props.submitPromptResponse(this.props.data.promptInfo, response, this.props.senderId, this.props.threadId)
     this.setState({promptAnswerText: '', pressedResponses: {}, pressedBubbles: {}})
     this._changeModalVisibility(false)
+  }
+
+  _toggleBubblePress (key, response) {
+    var bubbles = this.state.pressedBubbles
+    bubbles[key] = !this.state.pressedBubbles[key]
+
+    var responses = this.state.pressedResponses
+    responses[response] = !this.state.pressedResponses[response]
+
+    this.setState({
+      pressedBubbles: bubbles,
+      pressedResponses: responses
+    })
   }
 
   render () {

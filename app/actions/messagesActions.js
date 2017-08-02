@@ -83,11 +83,13 @@ export function loadThreadList () {
             var users = {}
             var userids = Object.keys(info.val().users)
             for (var i in userids) {
-              let name = await db.ref('/users/' + userids[i] + '/name').once('value')
-              users[userids[i]] = name.val()
-              if (userids[i] !== uid) names.push(name.val())
+              let first_name = await db.ref('/users/' + userids[i] + '/first_name').once('value')
+              let last_name = await db.ref('/users/' + userids[i] + '/last_name').once('value')
+              var name = first_name.val() + ' ' + last_name.val()
+              users[userids[i]] = name
+              if (userids[i] !== uid) names.push(name)
             }
-            title = names.join(', ')
+            title = names.join(', ') 
           }
           threads.push({
             id: id,
