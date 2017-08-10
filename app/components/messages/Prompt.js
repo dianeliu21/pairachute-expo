@@ -107,9 +107,6 @@ class Prompt extends Component {
   }
 
   _toggleBubblePress (key, response) {
-    console.log('bubble press', key, response)
-    console.log('before', this.state)
-
     var bubbles = this.state.pressedBubbles
     bubbles[key] = !this.state.pressedBubbles[key]
 
@@ -120,8 +117,6 @@ class Prompt extends Component {
       pressedBubbles: bubbles,
       pressedResponses: responses
     })
-
-    console.log('after', this.state)
   }
 
   render () {
@@ -158,7 +153,7 @@ class Prompt extends Component {
         </Modal>
         <View style={styles.promptContainer}>
           <View style={styles.promptHeadingContainer}>
-            <MaterialInitials backgroundColor={'#FC6150'} color={'white'} size={25} text={'Pairachute'} />
+            <MaterialInitials backgroundColor={'#659EFF'} color={'white'} size={25} text={'Pairachute'} />
             <Text style={styles.promptHeading}>Pairachute Prompt</Text>
           </View>
           <View style={styles.promptTextContainer}>

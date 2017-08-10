@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
     backgroundColor: constants.sentMessageColor
   },
   sentMessageText: {
-    color: 'white',
+    color: 'black',
     fontSize: 16,
     margin: 10
   },
@@ -199,7 +199,7 @@ const styles = StyleSheet.create({
   // Prompts
   promptAnswerButton: {
     alignSelf: 'center',
-    backgroundColor: constants.sentMessageColor,
+    backgroundColor: constants.promptAnswerButtonColor,
     padding: 10
   },
   promptAnswerButtonText: {
@@ -217,12 +217,13 @@ const styles = StyleSheet.create({
   },
   promptContainer: {
     alignItems: 'center',
-    borderBottomWidth: 1,
-    borderColor: '#d3d3d3',
-    borderTopWidth: 1,
+    backgroundColor: constants.promptBackgroundColor,
+    // borderBottomWidth: 1,
+    // borderColor: '#d3d3d3',
+    // borderTopWidth: 1,
     marginBottom: 15,
-    marginLeft: 5,
-    marginRight: 5,
+    // marginLeft: 5,
+    // marginRight: 5,
     marginTop: 15,
     padding: 20
   },
