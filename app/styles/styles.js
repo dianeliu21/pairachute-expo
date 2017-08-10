@@ -271,6 +271,7 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   promptResponseItem: {
+    backgroundColor: 'white',
     borderColor: constants.mediumGray,
     borderRadius: 10,
     borderWidth: 1,

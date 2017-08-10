@@ -25,7 +25,6 @@ class PromptResponse extends Component {
     }
 
     this.prompt = this.props.data.promptInfo.message.length > 100 ? '"' + this.props.data.promptInfo.message.substr(0, 100) + '..."' : '"' + this.props.data.promptInfo.message + '"'
-    // this.promptResponses = this._promptResponses()
     this.senderName = this.props.users[this.props.data.responseInfo.senderId]
   }
 
@@ -67,9 +66,10 @@ class PromptResponse extends Component {
   }
 
   _getResponsesOrTextInput () {
-    if (this.promptResponses !== null) {
+    if (this.props.data.promptInfo.responseOptions) {
       return (
         <View style={styles.flexColumnCenter}>
+          <Text>ided some responses, wont show input</Text>
           {this._promptResponses()}
         </View>
       )
