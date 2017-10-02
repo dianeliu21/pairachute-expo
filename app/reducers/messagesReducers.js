@@ -11,11 +11,12 @@ export function threads (state = {}, action) {
   }
 }
 
-export function focusedThread (state = {}, action) {
+export function focusedThread (state = { isReady: false }, action) {
   switch (action.type) {
     case types.INITIAL_LOAD_MESSAGES_SUCCESS:
       return Object.assign({}, state, {
         id: action.focusedThread.id,
+        isReady: true,
         title: action.focusedThread.title,
         users: action.focusedThread.users,
         messages: action.focusedThread.messages,

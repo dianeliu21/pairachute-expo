@@ -10,8 +10,8 @@ import {
 } from 'react-native'
 import MaterialInitials from 'react-native-material-initials/native'
 import MessageBubble from './MessageBubble'
-const constants = require('../../styles/constants.js')
-const styles = require('../../styles/styles.js')
+const constants = require('../../../styles/constants.js')
+const styles = require('../../../styles/styles.js')
 
 class PromptResponse extends Component {
   constructor (props) {

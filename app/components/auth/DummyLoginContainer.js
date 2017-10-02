@@ -11,12 +11,21 @@ import * as secrets from '../../config/secrets.js'
 const styles = require('../../styles/styles.js')
 
 class DummyLogin extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      loginDisabled: false,
+    }
+  }
+
   static navigationOptions = {
-    header: null
+    header: null,
   }
 
   async _login (email, password) {
+    this.setState({ loginDisabled: true })
     await this.props.login(email, password)
+    this.setState({ loginDisabled: false })
   }
 
   render () {
@@ -25,6 +34,7 @@ class DummyLogin extends Component {
         <Text style={styles.authTitle}>Pairachute</Text>
         <Text>Dummy Login - for testing purposes only</Text>
         <Button
+          disabled={this.state.loginDisabled}
           onPress={() => this._login(secrets.TEST_EMAIL, secrets.TEST_PASSWORD)}
           title={'Log In'}
         />

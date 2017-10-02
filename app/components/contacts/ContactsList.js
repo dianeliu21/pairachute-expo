@@ -24,7 +24,6 @@ class ContactsList extends Component {
   }
 
   render () {
-    console.log('data source row count', this.state.dataSource.getRowCount())
     return (
       <ListView
         dataSource={this.state.dataSource}

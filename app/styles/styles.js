@@ -16,6 +16,17 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0,0,0,0.25)',
     flex: 1
   },
+  wrapper: {
+    backgroundColor: 'white',
+    flex: 1,
+    margin: 0,
+    padding: 0
+  },
+
+  // Flexbox
+  alignItemsStretch: {
+    alignItems: 'stretch',
+  },
   flexColumn: {
     flexDirection: 'column'
   },
@@ -35,11 +46,68 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     flexDirection: 'row'
   },
-  wrapper: {
-    backgroundColor: 'white',
-    flex: 1,
-    margin: 0,
-    padding: 0
+  justifyContentCenter: {
+    justifyContent: 'center'
+  },
+
+  // Text styles
+  f_40: {
+    fontSize: 40,
+  },
+  f_30: {
+    fontSize: 30,
+  },
+  f_20: {
+    fontSize: 20,
+  },
+  smallHelpCenter: {
+    color: 'gray',
+    fontSize: 12,
+    textAlign: 'center'
+  },
+
+
+  // Colors
+  backgroundOrange: {
+    backgroundColor: constants.orange
+  },
+  backgroundTeal: {
+    backgroundColor: constants.teal
+  },
+  colorTeal: {
+    color: constants.teal
+  },
+  colorWhite: {
+    color: 'white'
+  },
+
+  // Borders
+  borderGray: {
+    borderColor: constants.mediumGray,
+  },
+  borderTopBottom: {
+    borderBottomWidth: 1,
+    borderTopWidth: 1,
+  },
+  borderTop: {
+    borderTopWidth: 1,
+  },
+
+  // Margins and Padding
+  marginFive: {
+    margin: 5,
+  },
+  margin_10: {
+    margin: 10,
+  },
+  paddingTen: {
+    padding: 10
+  },
+  padding_10: {
+    padding: 10,
+  },
+  padding_50: {
+    padding: 50
   },
 
   // Login/Signup and Auth
@@ -88,7 +156,7 @@ const styles = StyleSheet.create({
 
   // Message List
   messageListContainer: {
-    // marginTop: 60
+    paddingTop: 10,
   },
   messageListRow: {
     alignItems: 'center',
@@ -122,7 +190,7 @@ const styles = StyleSheet.create({
     marginBottom: 2
   },
   messageBubble: {
-    borderRadius: 10,
+    borderRadius: 15,
     marginTop: 2
   },
   messageDate: {
@@ -168,10 +236,10 @@ const styles = StyleSheet.create({
   },
   sentMessage: {
     alignSelf: 'flex-end',
-    backgroundColor: constants.sentMessageColor
+    backgroundColor: constants.teal
   },
   sentMessageText: {
-    color: 'black',
+    color: 'white',
     fontSize: 16,
     margin: 10
   },
@@ -184,16 +252,15 @@ const styles = StyleSheet.create({
   },
 
   // Message input
-  messageInputView: {
-    alignItems: 'center',
+  messageThreadInput: {
     borderColor: 'gray',
+    borderRadius: 20,
     borderWidth: 0.5,
-    flexDirection: 'row'
-  },
-  messageTextInput: {
     fontSize: 16,
-    height: 50,
-    padding: 10
+    margin: 10,
+    marginRight: 0,
+    padding: 10,
+    paddingTop: 5,
   },
 
   // Prompts
@@ -217,7 +284,6 @@ const styles = StyleSheet.create({
   },
   promptContainer: {
     alignItems: 'center',
-    backgroundColor: constants.promptBackgroundColor,
     // borderBottomWidth: 1,
     // borderColor: '#d3d3d3',
     // borderTopWidth: 1,

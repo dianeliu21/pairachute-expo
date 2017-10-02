@@ -19,6 +19,7 @@ class Login extends Component {
     this.state = {
       behavior: 'padding',
       email: '',
+      loginDisabled: false,
       password: '',
       screenWidth: 0
     }
@@ -28,6 +29,12 @@ class Login extends Component {
     header: null
   }
 
+  async _login() {
+    this.setState({ loginDisabled: true })
+    await this.props.login(this.state.email, this.state.password)
+    this.setState({ loginDisabled: false })
+  }
+  
   render () {
     return (
       <KeyboardAwareScrollView
@@ -37,9 +44,9 @@ class Login extends Component {
       >
         <View
           onLayout={(e) => { this.setState({screenWidth: e.nativeEvent.layout.width}) }}
-          style={styles.container}
+          style={[styles.container]}
         >
-          <Text style={styles.authTitle}>Pairachute</Text>
+          <Text style={[styles.authTitle]}>Pairachute</Text>
           <Text style={styles.authErrorText}>{this.props.authState.errorMessage}</Text>
           <TextInput
             onChangeText={(email) => this.setState({email})}
@@ -53,14 +60,10 @@ class Login extends Component {
             style={[styles.authInput, {width: this.state.screenWidth - 20}]}
           />
           <Button
-            onPress={() => this.props.login(this.state.email, this.state.password)}
+            disabled={this.state.loginDisabled}
+            onPress={() => this._login()}
             style={styles.authButton}
             title={'Log In'}
-          />
-          <Button
-            onPress={() => this.props.switchLoginToSignup()}
-            style={styles.authButton}
-            title={"Don't have an account? Sign up"}
           />
         </View>
       </KeyboardAwareScrollView>

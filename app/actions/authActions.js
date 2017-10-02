@@ -4,30 +4,34 @@ import fb from '../config/initializeFirebase'
 var db = fb.database()
 
 export function login (email, password) {
-  return function (dispatch) {
-    dispatch(loginAttempt())
-    return fb.auth().signInWithEmailAndPassword(email, password)
-      .then(function (response) {
-        var user = {
-          displayName: response.displayName,
-          email: response.email,
-          emailVerified: response.emailVerified,
-          providerData: response.providerData,
-          refreshToken: response.refreshToken,
-          uid: response.uid
-        }
-        dispatch(loginSuccess(user))
-        // dispatch(NavigationActions.reset({
-        //   index: 0,
-        //   actions: [
-        //     NavigationActions.navigate({routeName: 'Home'})
-        //   ]
-        // }))
-        dispatch(NavigationActions.navigate({routeName: 'Home'}))
-      }).catch(function (error) {
-        console.log(error.message)
-        dispatch(loginFailure(error.message))
-      })
+  return async function (dispatch) {
+    try {
+      dispatch(loginAttempt())
+      let response = await fb.auth().signInWithEmailAndPassword(email, password)
+      let userInfo = ( await db.ref('/users/' + response.uid).once('value') ).val()
+      var user = {
+        displayName: response.displayName,
+        email: response.email,
+        emailVerified: response.emailVerified,
+        firstName: userInfo.first_name,
+        providerData: response.providerData,
+        refreshToken: response.refreshToken,
+        reflectionType: userInfo.reflectionType,
+        showWelcome: userInfo.showWelcome,
+        threads: userInfo.threads,
+        uid: response.uid
+      }
+      dispatch(loginSuccess(user))
+      if (userInfo.reflectionType === 'paired') {
+        dispatch(NavigationActions.navigate({routeName: 'PairedHome'}))
+      } else {
+        dispatch(NavigationActions.navigate({routeName: 'SoloHome'}))
+      }
+      // dispatch(NavigationActions.navigate({routeName: 'Home'}))
+    } catch (error) {
+      console.log(error.message)
+      dispatch(loginFailure(error.message))
+    }
   }
 }
 

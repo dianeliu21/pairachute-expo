@@ -9,7 +9,7 @@ import {
   View
 } from 'react-native'
 import MaterialInitials from 'react-native-material-initials/native'
-const styles = require('../../styles/styles.js')
+const styles = require('../../../styles/styles.js')
 
 class Prompt extends Component {
   constructor (props) {
@@ -151,7 +151,7 @@ class Prompt extends Component {
             </View>
           </KeyboardAvoidingView>
         </Modal>
-        <View style={styles.promptContainer}>
+        <View style={[styles.promptContainer, styles.backgroundOrange]}>
           <View style={styles.promptHeadingContainer}>
             <MaterialInitials backgroundColor={'#659EFF'} color={'white'} size={25} text={'Pairachute'} />
             <Text style={styles.promptHeading}>Pairachute Prompt</Text>
@@ -160,7 +160,7 @@ class Prompt extends Component {
             <Text>{this.props.data.message}</Text>
           </View>
           <TouchableHighlight
-            onPress={() => this._changeModalVisibility(true)}
+            onPress={() => this.props.updateFocusedPrompt(this.props.data.message)}
             underlayColor={'rgba(255,255,255,0)'}
           >
             <View>
@@ -175,5 +175,7 @@ class Prompt extends Component {
     )
   }
 }
+
+// onPress={() => this.props.updateFocusedPrompt(this.props.data.message)}
 
 module.exports = Prompt

@@ -5,8 +5,8 @@ import {
   View
 } from 'react-native'
 import MaterialInitials from 'react-native-material-initials/native'
-import * as constants from '../../styles/constants.js'
-const styles = require('../../styles/styles.js')
+import * as constants from '../../../styles/constants.js'
+const styles = require('../../../styles/styles.js')
 
 class MessageBubble extends Component {
   constructor (props) {

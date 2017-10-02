@@ -39,7 +39,6 @@ export function loadContactCard (uid) {
     try {
       dispatch(loadContactCardAttempt())
       let contact = await db.ref('/users/' + uid).once('value')
-      console.log('this is contact', contact.val())
       var focusedContact = {
         uid: uid,
         first_name: contact.val().first_name,

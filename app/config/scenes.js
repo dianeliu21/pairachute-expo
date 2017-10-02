@@ -1,28 +1,47 @@
 import { TabNavigator } from 'react-navigation'
 
-import ContactsTabContainer from '../components/contacts/ContactsTabContainer'
 import DummyLoginContainer from '../components/auth/DummyLoginContainer'
 import MessagesTabContainer from '../components/messages/MessagesTabContainer'
 import MessageThreadContainer from '../components/messages/MessageThreadContainer'
 import LoginContainer from '../components/auth/LoginContainer'
 import SignupContainer from '../components/auth/SignupContainer'
+import WelcomeContainer from '../components/welcome/WelcomeContainer'
 
-const MainScreenNavigator = TabNavigator({
-  MessagesTab: { screen: MessagesTabContainer },
-  ContactsTab: { screen: ContactsTabContainer }
+import ChatTabContainer from '../components/messages/ChatTabContainer'
+import ReflectionTabContainer from '../components/messages/ReflectionTabContainer'
+import ReflectionAndChatTabContainer from '../components/messages/ReflectionAndChatTabContainer'
+
+import * as constants from '../styles/constants'
+
+const MainScreenNavigatorPaired = TabNavigator({
+  WelcomeTab: { screen: WelcomeContainer },
+  ReflectionAndChatTab: { screen: ReflectionAndChatTabContainer },
 }, {
-  initialRouteName: 'MessagesTab',
+  initialRouteName: 'WelcomeTab',
   tabBarOptions: {
-    activeTintColor: 'blue'
+    activeTintColor: constants.teal
+  }
+})
+
+const MainScreenNavigatorSolo = TabNavigator({
+  WelcomeTab: { screen: WelcomeContainer },
+  ReflectionTab: { screen: ReflectionTabContainer },
+  ChatTab: { screen: ChatTabContainer },
+}, {
+  initialRouteName: 'WelcomeTab',
+  tabBarOptions: {
+    activeTintColor: constants.teal
   }
 })
 
 export const StackRouteConfigs = {
   DummyLogin: { screen: DummyLoginContainer },
-  Home: { screen: MainScreenNavigator },
+  PairedHome: { screen: MainScreenNavigatorPaired },
+  SoloHome: { screen: MainScreenNavigatorSolo },
   Login: { screen: LoginContainer },
   Message: { screen: MessageThreadContainer },
-  Signup: { screen: SignupContainer }
+  Signup: { screen: SignupContainer },
+  Welcome: { screen: WelcomeContainer }
 }
 
 module.exports = StackRouteConfigs

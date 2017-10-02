@@ -2,12 +2,13 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { loadMessages, loadOldMessages, sendMessage, submitPromptResponse } from '../../actions/messagesActions'
 
-import MessageThread from './shared/MessageThread'
+import ReflectionAndChatTab from './tabs/ReflectionAndChatTab'
 
 const mapStateToProps = (state) => {
   return {
     user: state.user,
-    focusedThread: state.focusedThread
+    focusedThread: state.focusedThread,
+    chatType: 'reflectionAndChat'
   }
 }
 
@@ -20,9 +21,9 @@ const mapDispatchToProps = (dispatch) => {
   }, dispatch)
 }
 
-const MessagesThreadContainer = connect(
+const ReflectionAndChatTabContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(MessageThread)
+)(ReflectionAndChatTab)
 
-export default MessagesThreadContainer
+export default ReflectionAndChatTabContainer

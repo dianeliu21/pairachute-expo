@@ -47,6 +47,9 @@ export function user (state = {}, action) {
         emailVerified: action.user.emailVerified,
         providerData: action.user.providerData,
         refreshToken: action.user.refreshToken,
+        reflectionType: action.user.reflectionType,
+        showWelcome: action.user.showWelcome,
+        threads: action.user.threads,
         uid: action.user.uid
       })
     default:

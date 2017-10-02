@@ -10,7 +10,7 @@ class MessagesTab extends Component {
   static navigationOptions = {
     headerLeft: null,
     tabBarIcon: ({tintColor}) => (
-      <Entypo name={'chat'} size={26} color={tintColor} />
+      <Entypo name='chat' size={26} color={tintColor} />
     ),
     tabBarLabel: 'Messages',
     title: 'Messages'
