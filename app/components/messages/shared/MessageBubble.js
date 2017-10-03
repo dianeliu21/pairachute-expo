@@ -15,7 +15,7 @@ class MessageBubble extends Component {
       bubblePressed: false
     }
     // state variables
-    this.isOwnMessage = this.props.message.senderId === this.props.sender_id
+    this.isOwnMessage = this.props.message.senderId === this.props.senderId
     this.isSameSenderAsNext = this.props.message.senderId === this.props.message.nextSenderId
     this.isSameSenderAsPrev = this.props.message.senderId === this.props.message.prevSenderId
 
@@ -29,7 +29,9 @@ class MessageBubble extends Component {
     this.isSameDayAsNext = !this._notSameDayAsNext()
     this.avatar = !this.isOwnMessage && (!this.isSameSenderAsNext || (this.isSameSenderAsNext && !this.isSameDayAsNext))
       ? (<MaterialInitials backgroundColor={constants.mediumGray} color={'white'} single={false} size={constants.messageAvatarSize} style={styles.messageAvatar} text={this.props.users[this.props.message.senderId] || ''} />)
+      // ? null
       : null
+
     this.senderName = !this.isOwnMessage && (!this.isSameSenderAsPrev || this.date !== null)
      ? (<Text style={styles.receivedMessageSender}>{this.props.users[this.props.message.senderId]}</Text>)
      : null

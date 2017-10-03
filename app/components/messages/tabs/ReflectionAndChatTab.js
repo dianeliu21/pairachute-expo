@@ -6,13 +6,14 @@ import {
 import { SimpleLineIcons } from '@expo/vector-icons'
 import MessageThread from './../shared/MessageThread'
 import LoadingScreen from '../../shared/LoadingScreen'
+import Placeholder from '../../shared/Placeholder'
 const styles = require('../../../styles/styles.js')
 
 class ReflectionAndChatTab extends Component {
   static navigationOptions = {
     header: null,
     tabBarIcon: ({tintColor}) => (
-      <SimpleLineIcons name='bubble' size={26} color={tintColor} />
+      <SimpleLineIcons name='bubbles' size={26} color={tintColor} />
     ),
     title: 'Reflect and Chat'
   }
@@ -21,17 +22,18 @@ class ReflectionAndChatTab extends Component {
     await this.props.loadMessages(this.props.user.threads.reflectionAndChat)
   }
 
-  _renderLoadingOrMessage () {
-    return this.props.focusedThread.isReady
-     ? <MessageThread />
-     : <LoadingScreen />
-  }
-
   render () {
-    console.log('label', this.tabBarLabel)
     return (
       <View style={styles.wrapper}>
-        { this._renderLoadingOrMessage() }
+        {this.props.focusedThread.isReady
+          ? (<MessageThread
+              user={this.props.user}
+              focusedThread={this.props.focusedThread}
+              loadOldMessages={this.props.loadOldMessages}
+              sendMessage={this.props.sendMessage}
+              submitPromptResponse={this.props.submitPromptResponse}
+            />)
+          : <LoadingScreen />}
       </View>
     )
   }

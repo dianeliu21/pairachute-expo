@@ -21,17 +21,18 @@ class ReflectionTab extends Component {
     await this.props.loadMessages(this.props.user.threads.reflectionOnly)
   }
 
-  _renderLoadingOrMessage () {
-    return this.props.focusedThread.isReady
-     ? <MessageThread />
-     : <LoadingScreen />
-  }
-
   render () {
-    console.log('label', this.tabBarLabel)
     return (
       <View style={styles.wrapper}>
-        { this._renderLoadingOrMessage() }
+        {this.props.focusedThread.isReady
+          ? (<MessageThread
+              user={this.props.user}
+              focusedThread={this.props.focusedThread}
+              loadOldMessages={this.props.loadOldMessages}
+              sendMessage={this.props.sendMessage}
+              submitPromptResponse={this.props.submitPromptResponse}
+            />)
+          : <LoadingScreen />}
       </View>
     )
   }

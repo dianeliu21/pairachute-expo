@@ -5,7 +5,7 @@ import {
   TouchableHighlight,
   View,
 } from 'react-native'
-import { Entypo, Ionicons, SimpleLineIcons } from '@expo/vector-icons'
+import { SimpleLineIcons } from '@expo/vector-icons'
 import { NavigationActions } from 'react-navigation'
 const styles = require('../../styles/styles.js')
 
@@ -26,8 +26,6 @@ class Welcome extends Component {
   }
 
   _renderStep3Text = () => {
-    console.log(this.props)
-    console.log(this.state)
     if (this.props.user.reflectionType === 'paired') {
       return <Text>Chat with your partner about your reflections and give support!</Text>
     } else {
@@ -69,7 +67,7 @@ class Welcome extends Component {
           </View>
           <View style={styles.padding_10}>
             <View style={styles.flexRowCenter}>
-              <SimpleLineIcons name='bubble' size={25} />
+              <SimpleLineIcons name='bubbles' size={25} />
               <Text style={[styles.f_20, styles.padding_10]}>Step 3:</Text>
             </View>
             {this._renderStep3Text()}

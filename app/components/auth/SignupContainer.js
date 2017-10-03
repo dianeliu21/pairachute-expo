@@ -18,8 +18,8 @@ export class Signup extends Component {
     super(props)
     this.state = {
       email: '',
-      first_name: '',
-      last_name: '',
+      firstName: '',
+      lastName: '',
       password: '',
       passwordMatch: true,
       phone_number: '',
@@ -49,12 +49,12 @@ export class Signup extends Component {
           <Text style={styles.authTitle}>New Account</Text>
           <Text style={styles.authErrorText}>{this.props.authState.errorMessage}</Text>
           <TextInput
-            onChangeText={(firstName) => this.setState({first_name: firstName})}
+            onChangeText={(firstName) => this.setState({firstName: firstName})}
             placeholder={'First Name'}
             style={[styles.authInput, {width: this.state.screenWidth - 20}]}
           />
           <TextInput
-            onChangeText={(lastName) => this.setState({last_name: lastName})}
+            onChangeText={(lastName) => this.setState({lastName: lastName})}
             placeholder={'Last Name'}
             style={[styles.authInput, {width: this.state.screenWidth - 20}]}
           />
@@ -81,7 +81,7 @@ export class Signup extends Component {
             style={[styles.authInput, this.state.passwordMatch ? null : styles.authInputIncorrect, {width: this.state.screenWidth - 20}]}
           />
           <Button
-            onPress={() => this.props.signup(this.state.first_name, this.state.last_name, this.state.email, this.state.phone_number, this.state.password)}
+            onPress={() => this.props.signup(this.state.firstName, this.state.lastName, this.state.email, this.state.phone_number, this.state.password)}
             title={'Sign Up'}
           />
         </View>

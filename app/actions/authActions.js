@@ -13,7 +13,7 @@ export function login (email, password) {
         displayName: response.displayName,
         email: response.email,
         emailVerified: response.emailVerified,
-        firstName: userInfo.first_name,
+        firstName: userInfo.firstName,
         providerData: response.providerData,
         refreshToken: response.refreshToken,
         reflectionType: userInfo.reflectionType,
@@ -52,8 +52,8 @@ export function signup (firstName, lastName, email, phoneNumber, password) {
       }
 
       await db.ref('/users/' + response.uid).set({
-        first_name: firstName,
-        last_name: lastName,
+        firstName: firstName,
+        lastName: lastName,
         email: email,
         phone_number: phoneNumber
       })

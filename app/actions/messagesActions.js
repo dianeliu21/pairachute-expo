@@ -4,27 +4,30 @@ import fb from '../config/initializeFirebase'
 
 var db = fb.database()
 
-export function loadMessages (threadInfo) {
+export function loadMessages (threadId) {
   return async function (dispatch) {
     try {
       // load existing messages
       dispatch({type: types.INITIAL_LOAD_MESSAGES_ATTEMPT})
-      var msgRef = db.ref('/messages/' + threadInfo.id).limitToLast(20)
+      let threadInfo = (await db.ref('/threads/' + threadId).once('value')).val()
+      var msgRef = db.ref('/messages/' + threadId).limitToLast(20)
       let msgObject = await msgRef.once('value')
       var msgs = Object.keys(msgObject.val()).map(function (key) {
         return Object.assign({}, msgObject.val()[key], {key: key})
       })
-      var focusedThread = Object.assign({}, threadInfo, {
+      var focusedThread = {
+        id: threadId,
         oldestMsgKey: msgs.length > 0 ? msgs[0].key : null,
-        messages: msgs.reverse()
-      })
+        messages: msgs.reverse(),
+        users: threadInfo.users,
+      }
       dispatch({type: types.INITIAL_LOAD_MESSAGES_SUCCESS, focusedThread})
-      dispatch(NavigationActions.navigate({routeName: 'Message', params: {title: focusedThread.title}}))
+      // dispatch(NavigationActions.navigate({routeName: 'Message', params: {title: focusedThread.title}}))
 
       // listen for new messages
       try {
         dispatch({type: types.LOAD_NEW_MESSAGES_ATTEMPT})
-        var newMsgRef = db.ref('/messages/' + threadInfo.id).limitToLast(1)
+        var newMsgRef = db.ref('/messages/' + threadId).limitToLast(1)
         newMsgRef.on('child_added', function (data) {
           var newMessage = [Object.assign({}, data.val(), {key: data.key})]
           dispatch({type: types.LOAD_NEW_MESSAGES_SUCCESS, newMessage})
@@ -83,13 +86,13 @@ export function loadThreadList () {
             var users = {}
             var userids = Object.keys(info.val().users)
             for (var i in userids) {
-              let first_name = await db.ref('/users/' + userids[i] + '/first_name').once('value')
-              let last_name = await db.ref('/users/' + userids[i] + '/last_name').once('value')
-              var name = first_name.val() + ' ' + last_name.val()
+              let firstName = await db.ref('/users/' + userids[i] + '/firstName').once('value')
+              let lastName = await db.ref('/users/' + userids[i] + '/lastName').once('value')
+              var name = firstName.val() + ' ' + lastName.val()
               users[userids[i]] = name
               if (userids[i] !== uid) names.push(name)
             }
-            title = names.join(', ') 
+            title = names.join(', ')
           }
           threads.push({
             id: id,

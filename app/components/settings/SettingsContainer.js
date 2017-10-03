@@ -1,12 +1,11 @@
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import ContactCard from './ContactCard'
+import Settings from './Settings'
 
 const mapStateToProps = (state) => {
   return {
     user: state.user,
-    focusedContact: state.focusedContact
   }
 }
 
@@ -15,9 +14,9 @@ const mapDispatchToProps = (dispatch) => {
   }, dispatch)
 }
 
-const ContactCardContainer = connect(
+const SettingsContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(ContactCard)
+)(Settings)
 
-export default ContactCardContainer
+export default SettingsContainer

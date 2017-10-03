@@ -22,8 +22,8 @@ class MessageThread extends Component {
     this.state = {
       behavior: 'padding',
       data: [],
-      focusedPrompt: null,
       height: 0,
+      focusedPrompt: null,
       messageText: '',
       promptResponseText: '',
       screenWidth: 0,
@@ -35,20 +35,11 @@ class MessageThread extends Component {
     title: navigation.state.params.title
   })
 
-  clearFocusedPrompt() {
-    this.setState({ focusedPrompt: null})
-  }
-
   handlePickSuggestion = (messageText) => {
     this.setState({ messageText })
   }
 
-  _hideSuggestions () {
-    this.setState({ showSuggestions: false })
-  }
-
   updateFocusedPrompt = (prompt) => {
-    console.log('PROMPT', prompt)
     this.setState({ focusedPrompt: prompt })
   }
 
@@ -62,10 +53,6 @@ class MessageThread extends Component {
     this.setState({ promptResponseText: '' })
   }
 
-  _showSuggestions() {
-    this.setState({ showSuggestions: !this.state.showSuggestions })
-  }
-
   _updateInputHeight = (height) => {
     height = height > 125 ? 125 : height
     this.setState({
@@ -74,14 +61,16 @@ class MessageThread extends Component {
   }
 
   _renderLoadOldMessages = () => {
-    return <TouchableHighlight
-      onPress={() => this.props.loadOldMessages(this.props.focusedThread.id, this.props.focusedThread.oldestMsgKey)}
-      underlayColor={'rgba(255,255,255,0)'}
-    >
-      <View style={[styles.inverted, styles.loadOldMessageButton]}>
-        <Text>Load previous messages</Text>
-      </View>
-    </TouchableHighlight>
+    return (
+      <TouchableHighlight
+        onPress={() => this.props.loadOldMessages(this.props.focusedThread.id, this.props.focusedThread.oldestMsgKey)}
+        underlayColor={'rgba(255,255,255,0)'}
+      >
+        <View style={[styles.inverted, styles.loadOldMessageButton]}>
+          <Text>Load previous messages</Text>
+        </View>
+      </TouchableHighlight>
+    )
   }
 
   _renderMessageBubble (data) {
@@ -114,7 +103,7 @@ class MessageThread extends Component {
         <View style={styles.inverted}>
           <MessageBubble
             users={this.props.focusedThread.users}
-            sender_id={this.props.user.uid}
+            senderId={this.props.user.uid}
             message={data.item}
           />
         </View>
@@ -126,7 +115,7 @@ class MessageThread extends Component {
     return (
       <View style={[styles.flexRowEnd, styles.justifyContentCenter]}>
         <TouchableHighlight
-          onPress={() => this._showSuggestions()}
+          onPress={() => this._toggleShowSuggestions()}
           underlayColor={'rgba(255,255,255,0)'}
         >
           <View style={{marginBottom: 10, marginLeft: 15}}>
@@ -160,7 +149,7 @@ class MessageThread extends Component {
           <Text style={[styles.smallHelpCenter, { color: 'white' }]}>You are currently answering the prompt:</Text>
           <Text style={{textAlign: 'center', color: 'white'}}>{this.state.focusedPrompt}</Text>
           <TouchableHighlight
-            onPress={() => this.clearFocusedPrompt()}
+            onPress={() => this._clearFocusedPrompt()}
             underlayColor={'rgba(255,255,255,0)'}
           >
             <Text style={[styles.smallHelpCenter, {color: 'red'}]}>Stop answering this prompt</Text>
@@ -191,17 +180,17 @@ class MessageThread extends Component {
     return (
       <MessageSuggestions
         onPressSuggestion={this.handlePickSuggestion}
-        screenWidth={ this.state.screenWidth }
+        screenWidth={this.state.screenWidth}
       />
     )
   }
 
   render () {
     return (
-      <KeyboardAvoidingView behavior={this.state.behavior} style={styles.wrapper} keyboardVerticalOffset={60}>
+      <KeyboardAvoidingView behavior={this.state.behavior} style={styles.wrapper} keyboardVerticalOffset={0}>
         <View
           onLayout={(e) => { this.setState({screenWidth: e.nativeEvent.layout.width}) }}
-          style={styles.wrapper}>
+          style={[styles.wrapper, {paddingTop: 20}]}>
           <FlatList
             data={this.props.focusedThread.messages}
             ListFooterComponent={this._renderLoadOldMessages}
@@ -216,6 +205,18 @@ class MessageThread extends Component {
         </View>
       </KeyboardAvoidingView>
     )
+  }
+
+  _clearFocusedPrompt() {
+    this.setState({ focusedPrompt: null})
+  }
+
+  _hideSuggestions () {
+    this.setState({ showSuggestions: false })
+  }
+
+  _toggleShowSuggestions() {
+    this.setState({ showSuggestions: !this.state.showSuggestions })
   }
 }
 
