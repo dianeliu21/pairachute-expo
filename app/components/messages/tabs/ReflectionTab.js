@@ -18,6 +18,7 @@ class ReflectionTab extends Component {
   }
 
   async componentWillMount () {
+    console.log('this is props', this.props)
     await this.props.loadMessages(this.props.user.threads.reflectionOnly)
   }
 

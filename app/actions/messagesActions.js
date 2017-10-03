@@ -22,8 +22,7 @@ export function loadMessages (threadId) {
           return Object.assign({}, msgObject.val()[key], {key: key})
         })
       }
-
-      console.log('here')
+      console.log('this is thread id', threadId)
 
       var focusedThread = {
         id: threadId,
