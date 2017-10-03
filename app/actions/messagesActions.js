@@ -9,18 +9,30 @@ export function loadMessages (threadId) {
     try {
       // load existing messages
       dispatch({type: types.INITIAL_LOAD_MESSAGES_ATTEMPT})
+
       let threadInfo = (await db.ref('/threads/' + threadId).once('value')).val()
       var msgRef = db.ref('/messages/' + threadId).limitToLast(20)
       let msgObject = await msgRef.once('value')
-      var msgs = Object.keys(msgObject.val()).map(function (key) {
-        return Object.assign({}, msgObject.val()[key], {key: key})
-      })
+
+      var msgs
+      if (msgObject.val() === null) {
+        msgs = []
+      } else {
+        msgs = Object.keys(msgObject.val()).map(function (key) {
+          return Object.assign({}, msgObject.val()[key], {key: key})
+        })
+      }
+
+      console.log('here')
+
       var focusedThread = {
         id: threadId,
         oldestMsgKey: msgs.length > 0 ? msgs[0].key : null,
         messages: msgs.reverse(),
         users: threadInfo.users,
       }
+
+      console.log('here2')
       dispatch({type: types.INITIAL_LOAD_MESSAGES_SUCCESS, focusedThread})
       // dispatch(NavigationActions.navigate({routeName: 'Message', params: {title: focusedThread.title}}))
 
@@ -114,12 +126,26 @@ export function sendMessage (message, senderId, threadId) {
   return async function (dispatch) {
     try {
       dispatch({type: types.SEND_MESSAGE_ATTEMPT})
+      var updates = {}
+
       let prevMsg = await db.ref('/messages/' + threadId).limitToLast(1).once('value')
-      var prevMsgKey = Object.keys(prevMsg.val())[0]
-      var updatedPrevMsg = Object.assign({}, prevMsg.val()[prevMsgKey], {
-        nextSenderId: senderId,
-        nextMessageTimestamp: Date.now()
-      })
+
+      var prevMsgKey
+      var updatedPrevMsg
+      if (prevMsg.val() === null) {
+        prevMsgKey = null
+        updatedPrevMsg = {
+          senderId: null,
+          timestamp: null,
+        }
+      } else {
+        prevMsgKey = Object.keys(prevMsg.val())[0]
+        updatedPrevMsg = Object.assign({}, prevMsg.val()[prevMsgKey], {
+          nextSenderId: senderId,
+          nextMessageTimestamp: Date.now()
+        })
+        updates['/messages/' + threadId + '/' + prevMsgKey] = updatedPrevMsg
+      }
 
       var newMsgKey = db.ref('/messages').push().key
       var newMsgData = {
@@ -130,8 +156,6 @@ export function sendMessage (message, senderId, threadId) {
         prevMessageTimestamp: updatedPrevMsg.timestamp
       }
 
-      var updates = {}
-      updates['/messages/' + threadId + '/' + prevMsgKey] = updatedPrevMsg
       updates['/messages/' + threadId + '/' + newMsgKey] = newMsgData
       updates['/threads/' + threadId + '/last_message'] = newMsgData
 

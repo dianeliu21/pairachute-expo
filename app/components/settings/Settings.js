@@ -20,6 +20,8 @@ class Settings extends Component {
     return (
       <View style={styles.container}>
         <Text>Settings</Text>
+        <Text>Name: {this.props.user.displayName}</Text>
+        <Text>Email Address: {this.props.user.email}</Text>
       </View>
     )
   }
