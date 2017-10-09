@@ -19,19 +19,20 @@ class ReflectionAndChatTab extends Component {
   }
 
   async componentWillMount () {
-    await this.props.loadMessages(this.props.user.threads.reflectionAndChat)
+    await this.props.loadMessages('reflectionAndChat', this.props.user.threads.reflectionAndChat)
   }
 
   render () {
     return (
       <View style={styles.wrapper}>
-        {this.props.focusedThread.isReady
+        {this.props.reflectionAndChatThread.isReady
           ? (<MessageThread
               user={this.props.user}
-              focusedThread={this.props.focusedThread}
+              focusedThread={this.props.reflectionAndChatThread}
               loadOldMessages={this.props.loadOldMessages}
               sendMessage={this.props.sendMessage}
               submitPromptResponse={this.props.submitPromptResponse}
+              type='reflectionAndChat'
             />)
           : <LoadingScreen />}
       </View>

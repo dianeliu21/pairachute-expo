@@ -7,7 +7,7 @@ import ReflectionAndChatTab from './tabs/ReflectionAndChatTab'
 const mapStateToProps = (state) => {
   return {
     user: state.user,
-    focusedThread: state.focusedThread,
+    reflectionAndChatThread: state.reflectionAndChatThread,
     chatType: 'reflectionAndChat'
   }
 }

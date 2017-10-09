@@ -18,19 +18,20 @@ class ChatTab extends Component {
   }
 
   async componentWillMount () {
-    await this.props.loadMessages(this.props.user.threads.chatOnly)
+    await this.props.loadMessages('chatOnly', this.props.user.threads.chatOnly)
   }
 
   render () {
     return (
       <View style={styles.wrapper}>
-        {this.props.focusedThread.isReady
+        {this.props.chatOnlyThread.isReady
           ? (<MessageThread
               user={this.props.user}
-              focusedThread={this.props.focusedThread}
+              focusedThread={this.props.chatOnlyThread}
               loadOldMessages={this.props.loadOldMessages}
               sendMessage={this.props.sendMessage}
               submitPromptResponse={this.props.submitPromptResponse}
+              type='chatOnly'
             />)
           : <LoadingScreen />}
       </View>

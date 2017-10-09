@@ -4,7 +4,7 @@ import fb from '../config/initializeFirebase'
 
 var db = fb.database()
 
-export function loadMessages (threadId) {
+export function loadMessages (type, threadId) {
   return async function (dispatch) {
     try {
       // load existing messages
@@ -32,7 +32,13 @@ export function loadMessages (threadId) {
       }
 
       console.log('here2')
-      dispatch({type: types.INITIAL_LOAD_MESSAGES_SUCCESS, focusedThread})
+      if (type === 'chatOnly') {
+        dispatch({type: types.INITIAL_LOAD_CHAT_ONLY_MESSAGES_SUCCESS, focusedThread})
+      } else if (type === 'reflectionOnly') {
+        dispatch({type: types.INITIAL_LOAD_REFLECTION_ONLY_MESSAGES_SUCCESS, focusedThread})
+      } else {
+        dispatch({type: types.INITIAL_LOAD_REFLECTION_AND_CHAT_MESSAGES_SUCCESS, focusedThread})
+      }
       // dispatch(NavigationActions.navigate({routeName: 'Message', params: {title: focusedThread.title}}))
 
       // listen for new messages
@@ -41,7 +47,13 @@ export function loadMessages (threadId) {
         var newMsgRef = db.ref('/messages/' + threadId).limitToLast(1)
         newMsgRef.on('child_added', function (data) {
           var newMessage = [Object.assign({}, data.val(), {key: data.key})]
-          dispatch({type: types.LOAD_NEW_MESSAGES_SUCCESS, newMessage})
+          if (type === 'chatOnly') {
+            dispatch({type: types.LOAD_NEW_CHAT_ONLY_MESSAGES_SUCCESS, newMessage})
+          } else if (type === 'reflectionOnly') {
+            dispatch({type: types.LOAD_NEW_REFLECTION_ONLY_MESSAGES_SUCCESS, newMessage})
+          } else {
+            dispatch({type: types.LOAD_NEW_REFLECTION_AND_CHAT_MESSAGES_SUCCESS, newMessage})
+          }
         })
       } catch (err) {
         console.log('loadNewMessages error', err)
@@ -54,7 +66,7 @@ export function loadMessages (threadId) {
   }
 }
 
-export function loadOldMessages (threadId, oldestMsgKey) {
+export function loadOldMessages (type, threadId, oldestMsgKey) {
   return async function (dispatch) {
     try {
       dispatch({type: types.LOAD_OLD_MESSAGES_ATTEMPT})
@@ -68,7 +80,13 @@ export function loadOldMessages (threadId, oldestMsgKey) {
         oldestMsgKey: msgs.length > 0 ? msgs[0].key : null,
         messages: msgs.reverse()
       }
-      dispatch({type: types.LOAD_OLD_MESSAGES_SUCCESS, oldMessages})
+      if (type === 'chatOnly') {
+        dispatch({type: types.LOAD_OLD_CHAT_ONLY_MESSAGES_SUCCESS, oldMessages})
+      } else if (type === 'reflectionOnly') {
+        dispatch({type: types.LOAD_OLD_REFLECTION_ONLY_MESSAGES_SUCCESS, oldMessages})
+      } else {
+        dispatch({type: types.LOAD_OLD_REFLECTION_AND_CHAT_MESSAGES_SUCCESS, oldMessages})
+      }
     } catch (err) {
       console.log(err)
       dispatch({type: types.LOAD_OLD_MESSAGES_FAILURE})

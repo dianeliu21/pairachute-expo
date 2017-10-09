@@ -18,20 +18,20 @@ class ReflectionTab extends Component {
   }
 
   async componentWillMount () {
-    console.log('this is props', this.props)
-    await this.props.loadMessages(this.props.user.threads.reflectionOnly)
+    await this.props.loadMessages('reflectionOnly', this.props.user.threads.reflectionOnly)
   }
 
   render () {
     return (
       <View style={styles.wrapper}>
-        {this.props.focusedThread.isReady
+        {this.props.reflectionOnlyThread.isReady
           ? (<MessageThread
               user={this.props.user}
-              focusedThread={this.props.focusedThread}
+              focusedThread={this.props.reflectionOnlyThread}
               loadOldMessages={this.props.loadOldMessages}
               sendMessage={this.props.sendMessage}
               submitPromptResponse={this.props.submitPromptResponse}
+              type='reflectionOnly'
             />)
           : <LoadingScreen />}
       </View>

@@ -7,7 +7,7 @@ import ChatTab from './tabs/ChatTab'
 const mapStateToProps = (state) => {
   return {
     user: state.user,
-    focusedThread: state.focusedThread,
+    chatOnlyThread: state.chatOnlyThread,
   }
 }
 

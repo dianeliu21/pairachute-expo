@@ -63,7 +63,7 @@ class MessageThread extends Component {
   _renderLoadOldMessages = () => {
     return (
       <TouchableHighlight
-        onPress={() => this.props.loadOldMessages(this.props.focusedThread.id, this.props.focusedThread.oldestMsgKey)}
+        onPress={() => this.props.loadOldMessages(this.props.type, this.props.focusedThread.id, this.props.focusedThread.oldestMsgKey)}
         underlayColor={'rgba(255,255,255,0)'}
       >
         <View style={[styles.inverted, styles.loadOldMessageButton]}>
