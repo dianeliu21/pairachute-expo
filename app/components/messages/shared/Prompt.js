@@ -160,7 +160,7 @@ class Prompt extends Component {
             <Text>{this.props.data.message}</Text>
           </View>
           <TouchableHighlight
-            onPress={() => this.props.updateFocusedPrompt(this.props.data.message)}
+            onPress={() => this.props.updateFocusedPrompt(this.props.data)}
             underlayColor={'rgba(255,255,255,0)'}
           >
             <View>

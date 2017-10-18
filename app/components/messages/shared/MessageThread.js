@@ -49,7 +49,7 @@ class MessageThread extends Component {
   }
 
   _sendPromptResponse () {
-    this.props.submitPromptResponse(this.state.promptResponseText, this.state.promptResponseText, this.props.user.uid, this.props.focusedThread.id)
+    this.props.submitPromptResponse(this.state.focusedPrompt, this.state.promptResponseText, this.props.user.uid, this.props.focusedThread.id)
     this.setState({ promptResponseText: '' })
   }
 
@@ -147,7 +147,7 @@ class MessageThread extends Component {
       <View style={[styles.flexColumnCenter, styles.alignItemsStretch]}>
         <View style={[styles.backgroundOrange, styles.paddingTen]}>
           <Text style={[styles.smallHelpCenter, { color: 'white' }]}>You are currently answering the prompt:</Text>
-          <Text style={{textAlign: 'center', color: 'white'}}>{this.state.focusedPrompt}</Text>
+          <Text style={{textAlign: 'center', color: 'white'}}>{this.state.focusedPrompt.message}</Text>
           <TouchableHighlight
             onPress={() => this._clearFocusedPrompt()}
             underlayColor={'rgba(255,255,255,0)'}

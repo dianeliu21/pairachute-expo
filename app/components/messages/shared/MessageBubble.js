@@ -49,6 +49,7 @@ class MessageBubble extends Component {
 
   _parseTimestamp () {
     var time = new Date(this.props.message.timestamp)
+    console.log('parsing timestamp', time)
     return time.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})
   }
 

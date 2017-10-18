@@ -202,24 +202,14 @@ export function submitPromptResponse (prompt, response, senderId, threadId) {
       var promptInfo = {
         key: prompt.key,
         message: prompt.message,
-        responseOptions: prompt.responseOptions ? prompt.responseOptions : null
       }
 
       var responseInfo = {
         senderId: senderId,
       }
 
-      if (promptInfo.responseOptions) {
-        var temp = {}
-        Object.keys(response).forEach(function (bubbleKey) {
-          if (response[bubbleKey] === true) {
-            temp[bubbleKey] = promptInfo.responseOptions[bubbleKey]
-          }
-        })
-        responseInfo['response'] = temp
-      } else {
-        responseInfo['response'] = response
-      }
+      responseInfo['response'] = response
+
 
       let promptObj = await db.ref('/messages/' + threadId + '/' + prompt.key).once('value')
       var promptUpdate = {}

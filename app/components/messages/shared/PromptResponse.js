@@ -28,41 +28,23 @@ class PromptResponse extends Component {
     this.senderName = this.props.users[this.props.data.responseInfo.senderId]
   }
 
-  componentDidMount () {
-    if (this.props.data.promptInfo.responseOptions) {
-      var entries = Object.entries(this.props.data.promptInfo.responseOptions)
-      var bubbles = {}
-      var responses = {}
-      entries.forEach(function (entry) {
-        bubbles[entry[0]] = false
-        responses[entry[1]] = false
-      })
-
-      this.setState({
-        pressedBubbles: bubbles,
-        pressedResponses: responses
-      })
-    }
-  }
-
   _changeModalVisibility (visible) {
     this.setState({modalVisible: visible})
   }
 
   _displayResponse () {
-    if (this.props.data.promptInfo.responseOptions) {
-      var entries = Object.entries(this.props.data.responseInfo.response)
-      return entries.map(item =>
-        (<View key={item[0]} style={styles.promptResponseItem}>
-          <Text>{item[1]}</Text>
-        </View>)
-      )
-    }
     var message = Object.assign({}, this.props.data, {
       message: this.props.data.responseInfo.response,
-      senderId: this.props.data.responseInfo.senderId
+      senderId: this.props.data.responseInfo.senderId,
+      nextSenderId: this.props.data.nextSenderId,
+      prevSenderId: this.props.data.prevSenderId,
+      timestamp: this.props.data.timestamp,
+      prevMessageTimestamp: this.props.data.prevMessageTimestamp,
+      nextMessageTimestamp: this.props.data.nextMessageTimestamp,
+
     })
-    return(<MessageBubble users={this.props.users} sender_id={this.props.senderId} message={message}/>)
+    console.log('displaying response', message)
+    return(<MessageBubble users={this.props.users} senderId={this.props.senderId} message={message}/>)
   }
 
   _getResponsesOrTextInput () {
@@ -103,71 +85,13 @@ class PromptResponse extends Component {
     return null
   }
 
-  _submitPromptResponse () {
-    if (this.props.data.promptInfo.responseOptions) {
-      response = this.state.pressedBubbles
-    } else {
-      response = this.state.promptAnswerText
-    }
-    this.props.submitPromptResponse(this.props.data.promptInfo, response, this.props.senderId, this.props.threadId)
-    this.setState({promptAnswerText: '', pressedResponses: {}, pressedBubbles: {}})
-    this._changeModalVisibility(false)
-  }
-
-  _toggleBubblePress (key, response) {
-    var bubbles = this.state.pressedBubbles
-    bubbles[key] = !this.state.pressedBubbles[key]
-
-    var responses = this.state.pressedResponses
-    responses[response] = !this.state.pressedResponses[response]
-
-    this.setState({
-      pressedBubbles: bubbles,
-      pressedResponses: responses
-    })
-  }
-
   render () {
     return (
       <View>
-        <Modal
-          animationType={'fade'}
-          transparent
-          visible={this.state.modalVisible}
-        >
-          <KeyboardAvoidingView behavior={this.state.behavior} style={styles.darkenedBackgroundOverlay}>
-            <View style={styles.promptResponseModal}>
-              <View style={styles.promptModalHeaderContainer}>
-                <Text style={styles.promptModalHeading}>Pairachute Prompt</Text>
-              </View>
-              <View style={styles.promptTextContainer}>
-                <Text>{this.props.data.promptInfo.message}</Text>
-              </View>
-              {this._getResponsesOrTextInput()}
-              <View style={styles.flexRowCenter}>
-                <Button
-                  onPress={() => this._changeModalVisibility(false)}
-                  style={styles.promptModalButton}
-                  title={'Cancel'}
-                />
-                <Button
-                  onPress={() => this._submitPromptResponse()}
-                  style={styles.promptModalButton}
-                  title={'Submit'}
-                />
-              </View>
-            </View>
-          </KeyboardAvoidingView>
-        </Modal>
         <View style={styles.promptResponseContainer}>
-          <TouchableHighlight
-            onPress={() => this._changeModalVisibility(true)}
-            underlayColor={'rgba(255,255,255,0)'}
-          >
-            <Text style={styles.promptResponseHeader}>
-              <Text style={{fontWeight: 'bold'}}>{this.senderName}</Text> responded to the prompt {this.prompt} <Text style={{color: 'blue'}}>See prompt</Text>
-            </Text>
-          </TouchableHighlight>
+          <Text style={styles.promptResponseHeader}>
+            <Text style={{fontWeight: 'bold'}}>{this.senderName}</Text> responded to the prompt {this.prompt}
+          </Text>
           {this._displayResponse()}
         </View>
       </View>
