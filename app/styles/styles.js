@@ -65,6 +65,16 @@ const styles = StyleSheet.create({
     fontSize: 12,
     textAlign: 'center'
   },
+  errorMessage: {
+    color: 'red',
+    textAlign: 'center',
+    margin: 10
+  },
+  successMessage: {
+    color: 'green',
+    textAlign: 'center',
+    margin: 10
+  },
 
 
   // Colors

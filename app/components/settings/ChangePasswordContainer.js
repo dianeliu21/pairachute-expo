@@ -20,12 +20,19 @@ class ChangePassword extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      displayMessages: true,
       password: '',
       passwordMatch: true,
     }
   }
 
+  _handleSubmit () {
+    this.setState({displayMessages: true})
+    this.props.changePassword(this.state.password)
+  }
+
   verifyPassword (password) {
+    this.setState({displayMessages: false})
     password === this.state.password ? this.setState({passwordMatch: true}) : this.setState({passwordMatch: false})
   }
 
@@ -38,22 +45,23 @@ class ChangePassword extends Component {
       >
         <View style={styles.container}>
         <Text style={styles.f_30}>Change Password</Text>
-        <Text>{this.props.authState.changePasswordSuccessMessage}</Text>
-        <Text>{this.props.authState.changePasswordFailureMessage}</Text>
+        <Text style={styles.successMessage}>{this.state.displayMessages && this.props.authState.changePasswordSuccessMessage}</Text>
+        <Text style={styles.errorMessage}>{this.state.displayMessages && this.props.authState.changePasswordFailureMessage}</Text>
         <TextInput
-          onChangeText={(password) => this.setState({password})}
+          onChangeText={(password) => this.setState({password: password, displayMessages: false})}
           placeholder={'New Password'}
           secureTextEntry
           style={[styles.authInput, {width: this.state.screenWidth - 20}]}
         />
         <TextInput
+          onChange={this._handleChange}
           onChangeText={(password2) => this.verifyPassword(password2)}
           placeholder={'Verify New Password'}
           secureTextEntry
           style={[styles.authInput, this.state.passwordMatch ? null : styles.authInputIncorrect, {width: this.state.screenWidth - 20}]}
         />
         <Button
-          onPress={() => this.props.changePassword(this.state.password)}
+          onPress={() => this._handleSubmit()}
           title={'Change Password'}
         />
         </View>
