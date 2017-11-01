@@ -43,7 +43,7 @@ class PromptResponse extends Component {
       nextMessageTimestamp: this.props.data.nextMessageTimestamp,
 
     })
-    console.log('displaying response', message)
+    // console.log('displaying response', message)
     return(<MessageBubble users={this.props.users} senderId={this.props.senderId} message={message}/>)
   }
 

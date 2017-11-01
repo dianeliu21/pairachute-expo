@@ -5,7 +5,7 @@ import { AppNavigator } from '../config/AppNavigator'
 // const firstAction = AppNavigator.router.getActionForPathAndParams('MessagesTab')
 // const tempNavState = AppNavigator.router.getStateForAction(firstAction)
 // const secondAction = AppNavigator.router.getActionForPathAndParams('Login')
-const initialNavState = AppNavigator.router.getStateForAction(AppNavigator.router.getActionForPathAndParams('DummyLogin'))
+const initialNavState = AppNavigator.router.getStateForAction(AppNavigator.router.getActionForPathAndParams('Login'))
 
 export function nav (state = initialNavState, action) {
   let nextState

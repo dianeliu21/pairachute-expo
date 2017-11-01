@@ -30,6 +30,14 @@ export function authState (state = initialAuthState, action) {
         isAuthenticated: false,
         isPending: false
       })
+    case types.CHANGE_PASSWORD_SUCCESS:
+      return Object.assign({}, state, {
+        changePasswordSuccessMessage: action.successMessage
+      })
+    case types.CHANGE_PASSWORD_FAILURE:
+    return Object.assign({}, state, {
+      changePasswordFailureMessage: action.errorMessage
+    })
     case 'Logout':
       return { ...state, isLoggedIn: false }
     default:

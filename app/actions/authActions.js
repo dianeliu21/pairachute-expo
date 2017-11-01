@@ -79,6 +79,30 @@ export function switchLoginToSignup () {
   }
 }
 
+export function navToChangePassword () {
+  return function (dispatch) {
+    dispatch(NavigationActions.navigate({routeName: 'ChangePassword'}))
+  }
+}
+
+export function changePassword (password) {
+  return async function (dispatch) {
+    try {
+      dispatch({type: types.CHANGE_PASSWORD_ATTEMPT})
+
+      var user = fb.auth().currentUser;
+      await user.updatePassword(password)
+
+      var successMessage = 'Password change successful!'
+      dispatch({type: types.CHANGE_PASSWORD_SUCCESS, successMessage})
+    } catch (error) {
+      var errorMessage = error.message
+      console.log('change password failure', errorMessage)
+      dispatch({type: types.CHANGE_PASSWORD_FAILURE, errorMessage})
+    }
+  }
+}
+
 function switchLoginSignup () {
   return {
     type: types.SWITCH_LOGIN_SIGNUP
