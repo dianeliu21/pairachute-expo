@@ -25,6 +25,10 @@ class Welcome extends Component {
     tabBarLabel: 'Home'
   }
 
+  componentDidMount() {
+    this.props.registerForPushNotificationsAsync()
+  }
+
   _renderStep3Text = () => {
     if (this.props.user.reflectionType === 'paired') {
       return <Text>Chat with your partner about your reflections and give support!</Text>

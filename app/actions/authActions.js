@@ -1,6 +1,7 @@
 import * as types from './actionTypes'
 import { NavigationActions } from 'react-navigation'
 import fb from '../config/initializeFirebase'
+import { Permissions, Notifications } from 'expo';
 var db = fb.database()
 
 export function login (email, password) {
@@ -10,8 +11,8 @@ export function login (email, password) {
       let response = await fb.auth().signInWithEmailAndPassword(email, password)
       let userInfo = ( await db.ref('/users/' + response.uid).once('value') ).val()
       var user = {
-        displayName: response.displayName,
-        email: response.email,
+        displayName: response.displayName || userInfo.displayName,
+        email: response.email || userInfo.email,
         emailVerified: response.emailVerified,
         firstName: userInfo.firstName,
         providerData: response.providerData,
@@ -31,6 +32,49 @@ export function login (email, password) {
     } catch (error) {
       console.log(error.message)
       dispatch(loginFailure(error.message))
+    }
+  }
+}
+
+export function registerForPushNotificationsAsync() {
+  return async function (dispatch) {
+    try {
+      dispatch({type: types.REGISTER_PUSH_ATTEMPT})
+
+      const { existingStatus } = await Permissions.getAsync(Permissions.REMOTE_NOTIFICATIONS);
+      let finalStatus = existingStatus;
+
+      // only ask if permissions have not already been determined, because
+      // iOS won't necessarily prompt the user a second time.
+      if (existingStatus !== 'granted') {
+        // Android remote notification permissions are granted during the app
+        // install, so this will only ask on iOS
+        const { status } = await Permissions.askAsync(Permissions.REMOTE_NOTIFICATIONS);
+        finalStatus = status;
+      }
+
+      // Stop here if the user did not grant permissions
+      if (finalStatus !== 'granted') {
+        console.log('push failure - user did not grant permissions')
+        dispatch({type: types.REGISTER_PUSH_FAILURE})
+      }
+
+      // Get the token that uniquely identifies this device
+      let token = await Notifications.getExponentPushTokenAsync();
+      console.log('got token', token)
+
+      var updates = {}
+      var user = fb.auth().currentUser;
+      let userInfo = (await db.ref('/users/' + user.uid).once('value')).val()
+      var newUserInfo = Object.assign({}, userInfo, {
+        pushToken: token
+      })
+      updates['/users/' + user.uid] = newUserInfo
+      await db.ref().update(updates)
+      dispatch({type: types.REGISTER_PUSH_SUCCESS})
+    } catch (err) {
+      console.log('push failure', err.message)
+      dispatch({type: types.REGISTER_PUSH_FAILURE})
     }
   }
 }

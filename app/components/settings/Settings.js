@@ -21,8 +21,8 @@ class Settings extends Component {
     return (
       <View style={styles.container}>
         <Text style={styles.f_30}>Settings</Text>
-        <Text style={styles.f_20}>Name: {this.props.user.displayName}</Text>
-        <Text>Email Address: {this.props.user.email}</Text>
+        <Text style={styles.f_20}>{this.props.user.displayName}</Text>
+        <Text>{this.props.user.email}</Text>
         <Button
           onPress={() => this.props.navToChangePassword()}
           title={'Change Password'}
