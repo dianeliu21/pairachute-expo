@@ -44,7 +44,7 @@ class MessageThread extends Component {
   }
 
   _sendMessage () {
-    this.props.sendMessage(this.state.messageText, this.props.user.uid, this.props.focusedThread.id)
+    this.props.sendMessage(this.state.messageText, this.props.user.uid, this.props.user.displayName, this.props.focusedThread.id)
     this.setState({ messageText: '' })
   }
 

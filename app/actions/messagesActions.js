@@ -139,7 +139,7 @@ export function loadThreadList () {
   }
 }
 
-export function sendMessage (message, senderId, threadId) {
+export function sendMessage (message, senderId, senderDisplayName, threadId) {
   return async function (dispatch) {
     try {
       dispatch({type: types.SEND_MESSAGE_ATTEMPT})
@@ -168,6 +168,7 @@ export function sendMessage (message, senderId, threadId) {
       var newMsgData = {
         message: message,
         senderId: senderId,
+        senderDisplayName: senderDisplayName,
         timestamp: Date.now(),
         prevSenderId: updatedPrevMsg.senderId,
         prevMessageTimestamp: updatedPrevMsg.timestamp
@@ -179,7 +180,7 @@ export function sendMessage (message, senderId, threadId) {
       await db.ref().update(updates)
       dispatch({type: types.SEND_MESSAGE_SUCCESS})
     } catch (err) {
-      console.log(err)
+      console.log('send message error', err.message)
       dispatch({type: types.SEND_MESSAGE_FAILURE})
     }
   }
