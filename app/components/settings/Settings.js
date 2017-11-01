@@ -20,7 +20,7 @@ class Settings extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.f_30}>Settings</Text>
+        <Text style={[styles.f_30, {marginBottom: 50}]}>Settings</Text>
         <Text style={styles.f_20}>{this.props.user.displayName}</Text>
         <Text>{this.props.user.email}</Text>
         <Button
