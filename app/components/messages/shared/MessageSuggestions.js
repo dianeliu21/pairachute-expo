@@ -5,63 +5,70 @@ import {
   TouchableHighlight,
   View
 } from 'react-native'
-import { FontAwesome } from '@expo/vector-icons'
+import { Entypo, FontAwesome, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
 import * as constants from '../../../styles/constants.js'
 const styles = require('../../../styles/styles.js')
 
 class MessageSuggestions extends Component {
-  suggestedMessages = [
+  iconSize = 20
+  iconColor = 'white'
+  suggestedMessagesRowOne = [
     {
-      faIconName: 'coffee',
+      icon: (<FontAwesome name='road' size={this.iconSize} color={this.iconColor}/>),
       message: 'I get what you’re going through.',
       type: 'emotionalSupport'
     },
     {
-      faIconName: 'coffee',
-      message: 'What resources do you need?',
-      type: 'instrumentalSupport'
-    },
-    {
-      faIconName: 'coffee',
-      message: 'Can I offer any advice or ideas?',
-      type: 'informationalSupport'
-    },
-    {
-      faIconName: 'coffee',
-      message: 'The work you’re doing is important!',
-      type: 'valueAppraisal'
-    },
-    {
-      faIconName: 'coffee',
-      message: 'Well done on that task!',
-      type: 'workAppraisal'
-    },
-    {
-      faIconName: 'coffee',
+      icon: (<FontAwesome name='smile-o' size={this.iconSize} color={this.iconColor} />),
       message: 'I’m glad you’re here!',
       type: 'personalAppraisal'
     },
     {
-      faIconName: 'coffee',
+      icon: (<Entypo name='thumbs-up' size={this.iconSize} color={this.iconColor} />),
+      message: 'Well done on that task!',
+      type: 'workAppraisal'
+    },
+    {
+      icon: (<Ionicons name='ios-paper' size={this.iconSize} color={this.iconColor} />),
+      message: 'The work you’re doing is important!',
+      type: 'valueAppraisal'
+    }
+  ]
+  suggestedMessagesRowTwo = [
+    {
+      icon: (<Entypo name='tools' size={this.iconSize} color={this.iconColor} />),
+      message: 'What resources do you need?',
+      type: 'instrumentalSupport'
+    },
+    {
+      icon: (<Entypo name='chat' size={this.iconSize} color={this.iconColor} />),
+      message: 'Can I offer any advice or ideas?',
+      type: 'informationalSupport'
+    },
+    {
+      icon: (<FontAwesome name='coffee' size={this.iconSize} color={this.iconColor} />),
       message: 'Want to meet for coffee?',
       type: 'coffee'
     },
     {
-      faIconName: 'coffee',
+      icon: (<MaterialCommunityIcons name='human-greeting' size={this.iconSize} color={this.iconColor} />),
       message: 'Thank you for your support!',
       type: 'gratitude'
     },
   ]
 
-  renderSuggestions = () => {
-    return this.suggestedMessages.map((item) => {
+  renderSuggestions = (suggestions) => {
+    return suggestions.map((item) => {
       return (
         <TouchableHighlight
           key={item.type}
           onPress={() => this.props.onPressSuggestion(item.message)}
           underlayColor={'rgba(255,255,255,0)'}
         >
-          <View style={[styles.messageBubble, styles.backgroundTeal, styles.marginFive]}>
+          <View style={[styles.messageBubble, styles.backgroundTeal, styles.marginFive, styles.flexRowCenter]}>
+            <View style={{paddingLeft: 10}}>
+              {item.icon}
+            </View>
             <Text style={styles.sentMessageText}>{item.message}</Text>
           </View>
         </TouchableHighlight>
@@ -73,8 +80,11 @@ class MessageSuggestions extends Component {
     return (
       <View style={[styles.borderTop, styles.borderGray]}>
         <Text style={styles.smallHelpCenter}>Need suggestions? Use these examples: </Text>
-        <ScrollView horizontal contentContainerStyle={[styles.flexRowCenter, {flexWrap: 'wrap'}]}>
-          { this.renderSuggestions() }
+        <ScrollView horizontal>
+          <View style={styles.flexColumn}>
+            <View style={styles.flexRowCenter}>{ this.renderSuggestions(this.suggestedMessagesRowOne) }</View>
+            <View style={styles.flexRowCenter}>{ this.renderSuggestions(this.suggestedMessagesRowTwo) }</View>
+          </View>
         </ScrollView>
       </View>
     )
