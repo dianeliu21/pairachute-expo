@@ -78,11 +78,17 @@ const styles = StyleSheet.create({
 
 
   // Colors
+  backgroundPastelBlue: {
+    backgroundColor: constants.pastelBlue
+  },
   backgroundOrange: {
     backgroundColor: constants.orange
   },
   backgroundTeal: {
     backgroundColor: constants.teal
+  },
+  colorPastelBlue: {
+    color: constants.pastelBlue
   },
   colorTeal: {
     color: constants.teal
@@ -122,7 +128,11 @@ const styles = StyleSheet.create({
 
   // Login/Signup and Auth
   authButton: {
-    margin: 5
+    backgroundColor: 'white',
+    borderRadius: 10,
+    color: 'white',
+    margin: 20
+
   },
   authErrorText: {
     color: 'red',
@@ -130,7 +140,9 @@ const styles = StyleSheet.create({
     margin: 10
   },
   authInput: {
+    backgroundColor: 'white',
     borderColor: 'gray',
+    borderRadius: 10,
     borderWidth: 1,
     height: 50,
     margin: 10,
@@ -147,6 +159,9 @@ const styles = StyleSheet.create({
   authTitle: {
     fontSize: 40,
     textAlign: 'center'
+  },
+  authContainerColor: {
+    backgroundColor: constants.pastelBlue,
   },
 
   // TabBar Styles

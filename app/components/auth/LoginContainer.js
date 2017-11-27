@@ -5,6 +5,7 @@ import { login, switchLoginToSignup } from '../../actions/authActions'
 // Login component
 import React, { Component } from 'react'
 import {
+  Image,
   Button,
   Text,
   TextInput,
@@ -34,7 +35,7 @@ class Login extends Component {
     await this.props.login(this.state.email, this.state.password)
     this.setState({ loginDisabled: false })
   }
-  
+
   render () {
     return (
       <KeyboardAwareScrollView
@@ -44,9 +45,12 @@ class Login extends Component {
       >
         <View
           onLayout={(e) => { this.setState({screenWidth: e.nativeEvent.layout.width}) }}
-          style={[styles.container]}
+          style={[styles.container, styles.authContainerColor]}
         >
-          <Text style={[styles.authTitle]}>Pairachute</Text>
+          <Image
+            style={{width: 200, height: 200}}
+            source={require('./../../../resources/pairachute_graphic.png')}>
+          </Image>
           <Text style={styles.authErrorText}>{this.props.authState.errorMessage}</Text>
           <TextInput
             onChangeText={(email) => this.setState({email})}
@@ -63,6 +67,7 @@ class Login extends Component {
             disabled={this.state.loginDisabled}
             onPress={() => this._login()}
             style={styles.authButton}
+            color={'white'}
             title={'Log In'}
           />
         </View>

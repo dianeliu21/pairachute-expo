@@ -7,6 +7,7 @@ import {
 } from 'react-native'
 import { SimpleLineIcons } from '@expo/vector-icons'
 import { NavigationActions } from 'react-navigation'
+const constants = require('../../styles/constants.js')
 const styles = require('../../styles/styles.js')
 
 class Welcome extends Component {
@@ -22,7 +23,7 @@ class Welcome extends Component {
     tabBarIcon: ({tintColor}) => (
       <SimpleLineIcons name='home' size={26} color={tintColor} />
     ),
-    tabBarLabel: 'Home'
+    tabBarLabel: 'Welcome'
   }
 
   componentDidMount() {
@@ -31,9 +32,9 @@ class Welcome extends Component {
 
   _renderStep3Text = () => {
     if (this.props.user.reflectionType === 'paired') {
-      return <Text>Chat with your partner about your reflections and give support!</Text>
+      return <Text style={[styles.colorWhite]}>Chat with your partner about your reflections and give support!</Text>
     } else {
-      return <Text>Chat with your partner in the chat window tab!</Text>
+      return <Text style={[styles.colorWhite]}>Chat with your partner in the chat window tab!</Text>
     }
   }
 
@@ -47,23 +48,23 @@ class Welcome extends Component {
 
   render () {
     return (
-      <View style={[styles.wrapper, {paddingTop: 100, alignItems: 'center'}]}>
-        <Text style={styles.f_30}>Welcome to Pairachute!</Text>
+      <View style={[styles.wrapper, styles.backgroundPastelBlue, {paddingTop: 100, alignItems: 'center'}]}>
+        <Text style={[styles.f_30, styles.colorWhite]}>Welcome to Pairachute!</Text>
         <View style={styles.padding_50}>
           <View style={styles.padding_10}>
             <View style={styles.flexRowCenter}>
-              <SimpleLineIcons name='bell' size={25} />
-              <Text style={[styles.f_20, styles.padding_10]}>Step 1:</Text>
+              <SimpleLineIcons name='bell' size={25} color='white' />
+              <Text style={[styles.f_20, styles.padding_10, styles.colorWhite]}>Step 1:</Text>
             </View>
-            <Text>Receive notifications at 9:15am on Tuesday and Thursday to reflect.</Text>
+            <Text style={[styles.colorWhite]}>Receive notifications at 9:15am on Tuesday and Thursday to reflect.</Text>
           </View>
           <View style={styles.padding_10}>
             <View style={styles.flexRowCenter}>
-              <SimpleLineIcons name='note' size={25} />
-              <Text style={[styles.f_20, styles.padding_10]}>Step 2:</Text>
+              <SimpleLineIcons name='note' size={25} color='white' />
+              <Text style={[styles.f_20, styles.padding_10, styles.colorWhite]}>Step 2:</Text>
             </View>
             <View>
-              <Text>
+              <Text style={[styles.colorWhite]}>
                 Reflect on your progress in Pairachute or snooze for later in
                 the day! All answers will be kept confidential.
               </Text>
@@ -71,8 +72,8 @@ class Welcome extends Component {
           </View>
           <View style={styles.padding_10}>
             <View style={styles.flexRowCenter}>
-              <SimpleLineIcons name='bubbles' size={25} />
-              <Text style={[styles.f_20, styles.padding_10]}>Step 3:</Text>
+              <SimpleLineIcons name='bubbles' size={25} color='white' />
+              <Text style={[styles.f_20, styles.padding_10, styles.colorWhite]}>Step 3:</Text>
             </View>
             {this._renderStep3Text()}
           </View>
