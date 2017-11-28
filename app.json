@@ -2,14 +2,17 @@
    "expo": {
     "name": "pairachute",
     "icon": "resources/ios/pairachute_icon_ios.png",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "slug": "pairachute-slug",
     "sdkVersion": "21.0.0",
     "ios": {
-      "bundleIdentifier": "com.pairachute.pairachuteapp"
+      "bundleIdentifier": "com.pairachute.pairachuteapp",
+      "icon": "resources/ios/pairachute_icon_ios.png",
     },
     "android": {
-      "package": "com.pairachute.pairachute"
+      "package": "com.pairachute.pairachute",
+      "icon": "resources/android/pairachute_icon_android.png",
+      "versionCode": 2,
     }
    }
  }
