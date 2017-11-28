@@ -28,7 +28,6 @@ export function login (email, password) {
       } else {
         dispatch(NavigationActions.navigate({routeName: 'SoloHome'}))
       }
-      // dispatch(NavigationActions.navigate({routeName: 'Home'}))
     } catch (error) {
       console.log(error.message)
       dispatch(loginFailure(error.message))
@@ -60,7 +59,7 @@ export function registerForPushNotificationsAsync() {
       }
 
       // Get the token that uniquely identifies this device
-      let token = await Notifications.getExponentPushTokenAsync();
+      let token = await Notifications.getExpoPushTokenAsync();
       console.log('got token', token)
 
       var updates = {}
@@ -102,12 +101,6 @@ export function signup (firstName, lastName, email, phoneNumber, password) {
         phone_number: phoneNumber
       })
       dispatch(signupSuccess(user))
-      // dispatch(NavigationActions.reset({
-      //   index: 0,
-      //   actions: [
-      //     NavigationActions.navigate({routeName: 'Home'})
-      //   ]
-      // }))
       dispatch(NavigationActions.navigate({routeName: 'Home'}))
     } catch (error) {
       console.log(error.message)
