@@ -128,7 +128,7 @@ class MessageThread extends Component {
           onContentSizeChange={(e) => this._updateInputHeight(e.nativeEvent.contentSize.height)}
           onFocus={() => this._hideSuggestions()}
           placeholder={'Type a message'}
-          style={[styles.messageThreadInput, { height: this.state.height, width: this.state.screenWidth - 110 }]}
+          style={[styles.messageThreadInput, { height: this.state.height + 15, width: this.state.screenWidth - 110 }]}
           value={this.state.messageText}
         />
         <View style={{paddingBottom: 10, paddingRight: 10}}>
