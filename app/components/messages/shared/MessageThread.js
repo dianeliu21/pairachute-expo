@@ -161,7 +161,7 @@ class MessageThread extends Component {
             onChangeText={(promptResponseText) => this.setState({promptResponseText})}
             onContentSizeChange={(e) => this._updateInputHeight(e.nativeEvent.contentSize.height)}
             placeholder={'Type an answer'}
-            style={[styles.messageThreadInput, { height: this.state.height, width: this.state.screenWidth - 75 }]}
+            style={[styles.messageThreadInput, { height: this.state.height + 15, width: this.state.screenWidth - 75 }]}
             value={this.state.promptResponseText}
           />
           <View style={{paddingBottom: 10, paddingRight: 10}}>

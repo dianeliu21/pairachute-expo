@@ -2,7 +2,7 @@
    "expo": {
     "name": "pairachute",
     "icon": "resources/ios/pairachute_icon_ios.png",
-    "version": "1.0.1",
+    "version": "1.0.3",
     "slug": "pairachute-slug",
     "sdkVersion": "21.0.0",
     "ios": {
@@ -12,7 +12,7 @@
     "android": {
       "package": "com.pairachute.pairachute",
       "icon": "resources/android/pairachute_icon_android.png",
-      "versionCode": 2,
+      "versionCode": 4,
     }
    }
  }
