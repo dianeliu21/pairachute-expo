@@ -157,7 +157,7 @@ class Prompt extends Component {
             <Text style={styles.promptHeading}>Pairachute Prompt</Text>
           </View>
           <View style={styles.promptTextContainer}>
-            <Text>{this.props.data.message}</Text>
+            <Text style={{color: 'white'}}>{this.props.data.message}</Text>
           </View>
           <TouchableHighlight
             onPress={() => this.props.updateFocusedPrompt(this.props.data)}

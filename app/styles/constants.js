@@ -7,6 +7,7 @@ export const pastelBlue = '#71B8CD'
 export const teal = '#40BFBF'
 export const orange = '#FFB266'
 export const mediumGray = '#bcbcbc'
+export const rightpointRed = '#BD3F35'
 
 // Sizes
 export const messageListAvatarSize = 50

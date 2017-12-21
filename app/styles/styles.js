@@ -12,6 +12,14 @@ const styles = StyleSheet.create({
     margin: 0,
     padding: 0
   },
+  redContainer: {
+    alignItems: 'center',
+    backgroundColor: constants.rightpointRed,
+    flex: 1,
+    justifyContent: 'center',
+    margin: 0,
+    padding: 0
+  },
   darkenedBackgroundOverlay: {
     backgroundColor: 'rgba(0,0,0,0.25)',
     flex: 1
@@ -60,6 +68,9 @@ const styles = StyleSheet.create({
   f_20: {
     fontSize: 20,
   },
+  f_15: {
+    fontSize: 15,
+  },
   smallHelpCenter: {
     color: 'gray',
     fontSize: 12,
@@ -87,6 +98,9 @@ const styles = StyleSheet.create({
   backgroundTeal: {
     backgroundColor: constants.teal
   },
+  backgroundRightpointRed: {
+    backgroundColor: constants.rightpointRed
+  },
   colorPastelBlue: {
     color: constants.pastelBlue
   },
@@ -95,6 +109,9 @@ const styles = StyleSheet.create({
   },
   colorWhite: {
     color: 'white'
+  },
+  rightpointRed: {
+    color: constants.rightpointRed
   },
 
   // Borders
@@ -129,9 +146,9 @@ const styles = StyleSheet.create({
   // Login/Signup and Auth
   authButton: {
     backgroundColor: 'white',
-    borderRadius: 10,
-    color: 'white',
-    margin: 20
+    padding: 15,
+    borderRadius: 5,
+    marginTop: 25
 
   },
   authErrorText: {
@@ -145,6 +162,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 1,
     height: 50,
+
     margin: 10,
     padding: 10
   },
@@ -292,7 +310,8 @@ const styles = StyleSheet.create({
   promptAnswerButton: {
     alignSelf: 'center',
     backgroundColor: constants.promptAnswerButtonColor,
-    padding: 10
+    padding: 10,
+    borderRadius: 5
   },
   promptAnswerButtonText: {
     fontWeight: 'bold',
@@ -319,14 +338,15 @@ const styles = StyleSheet.create({
     padding: 20
   },
   promptHeading: {
-    color: 'grey',
+    color: 'white',
     fontSize: 14,
+    fontWeight: 'bold',
     marginLeft: 5
   },
   promptHeadingContainer: {
     alignItems: 'center',
     flexDirection: 'row',
-    marginBottom: 5
+    marginBottom: 5,
   },
   promptModalButton: {
     flex: 0.5
@@ -392,6 +412,34 @@ const styles = StyleSheet.create({
   },
   dummy:{
     backgroundColor: 'red'
+  },
+
+  // Settings
+  settingsText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginTop: 15,
+    marginBottom: 25
+  },
+  settingsButton: {
+    alignItems: 'center',
+    backgroundColor: constants.rightpointRed,
+    margin: 10,
+    padding: 10,
+    borderRadius: 5,
+  },
+  settingsButtonInverted: {
+    alignItems: 'center',
+    backgroundColor: 'white',
+    margin: 10,
+    padding: 10,
+    borderRadius: 5,
+  },
+  settingsButtonText: {
+    color: 'white'
+  },
+  settingsButtonTextInverted: {
+    color: constants.rightpointRed
   }
 })
 

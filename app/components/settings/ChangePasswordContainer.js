@@ -4,9 +4,9 @@ import { changePassword } from '../../actions/authActions'
 
 import React, { Component } from 'react'
 import {
-  Button,
   Text,
   TextInput,
+  TouchableHighlight,
   View,
 } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
@@ -41,10 +41,10 @@ class ChangePassword extends Component {
       <KeyboardAwareScrollView
         contentContainerStyle={styles.wrapper}
         resetScrollToCoords={{x: 0, y: 0}}
-        style={{backgroundColor: 'white'}}
+        style={styles.backgroundRightpointRed}
       >
-        <View style={styles.container}>
-        <Text style={styles.f_30}>Change Password</Text>
+        <View style={[styles.container, styles.backgroundRightpointRed]}>
+        <Text style={[styles.f_30, styles.colorWhite]}>Change Password</Text>
         <Text style={styles.successMessage}>{this.state.displayMessages && this.props.authState.changePasswordSuccessMessage}</Text>
         <Text style={styles.errorMessage}>{this.state.displayMessages && this.props.authState.changePasswordFailureMessage}</Text>
         <TextInput
@@ -60,10 +60,11 @@ class ChangePassword extends Component {
           secureTextEntry
           style={[styles.authInput, this.state.passwordMatch ? null : styles.authInputIncorrect, {width: this.state.screenWidth - 20}]}
         />
-        <Button
-          onPress={() => this._handleSubmit()}
-          title={'Change Password'}
-        />
+        <TouchableHighlight
+          style={styles.settingsButtonInverted}
+          onPress={() => this._handleSubmit()}>
+          <Text style={styles.settingsButtonTextInverted}> Change Password </Text>
+        </TouchableHighlight>
         </View>
       </KeyboardAwareScrollView>
     )

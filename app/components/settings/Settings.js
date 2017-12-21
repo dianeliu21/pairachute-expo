@@ -1,12 +1,18 @@
 import React, { Component } from 'react'
 import {
-  Button,
+  Image,
+  TouchableHighlight,
   Text,
   View,
 } from 'react-native'
 import { SimpleLineIcons } from '@expo/vector-icons'
 import { NavigationActions } from 'react-navigation'
 const styles = require('../../styles/styles.js')
+
+var reactNative = require('react-native');
+var {
+  AsyncStorage
+} = reactNative;
 
 class Settings extends Component {
   static navigationOptions = {
@@ -17,16 +23,28 @@ class Settings extends Component {
     tabBarLabel: 'Settings'
   }
 
+  logout() {
+    AsyncStorage.multiRemove(['email', 'password']);
+  }
+
   render() {
     return (
       <View style={styles.container}>
-        <Text style={[styles.f_30, {marginBottom: 50}]}>Settings</Text>
-        <Text style={styles.f_20}>{this.props.user.displayName}</Text>
-        <Text>{this.props.user.email}</Text>
-        <Button
-          onPress={() => this.props.navToChangePassword()}
-          title={'Change Password'}
+        <Image
+          style={{width: 350, height: 100}}
+          source={require('../../../resources/rightpoint_logo.png')}
         />
+        <Text style={styles.settingsText}>{this.props.user.email}</Text>
+        <TouchableHighlight
+          style={styles.settingsButton}
+          onPress={() => this.props.navToChangePassword()}>
+          <Text style={styles.settingsButtonText}> Change Password </Text>
+        </TouchableHighlight>
+        <TouchableHighlight
+          style={styles.settingsButton}
+          onPress={() => this.logout()}>
+          <Text style={styles.settingsButtonText}> Log Out </Text>
+        </TouchableHighlight>
       </View>
     )
   }
