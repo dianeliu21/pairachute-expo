@@ -225,7 +225,8 @@ const styles = StyleSheet.create({
     borderColor: constants.mediumGray,
     borderWidth: 1,
     margin: 10,
-    padding: 10
+    padding: 10,
+    borderRadius: 5
   },
 
   // Message Bubble
@@ -328,9 +329,9 @@ const styles = StyleSheet.create({
   },
   promptContainer: {
     alignItems: 'center',
-    // borderBottomWidth: 1,
-    // borderColor: '#d3d3d3',
-    // borderTopWidth: 1,
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    borderColor: '#d3d3d3',
     marginBottom: 15,
     // marginLeft: 5,
     // marginRight: 5,

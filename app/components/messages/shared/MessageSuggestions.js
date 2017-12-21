@@ -12,7 +12,7 @@ const styles = require('../../../styles/styles.js')
 class MessageSuggestions extends Component {
   iconSize = 20
   iconColor = 'white'
-  suggestedMessagesRowOne = [
+  suggestedMessagesRow1 = [
     {
       icon: (<FontAwesome name='road' size={this.iconSize} color={this.iconColor}/>),
       message: 'I get what you’re going through.',
@@ -22,7 +22,9 @@ class MessageSuggestions extends Component {
       icon: (<FontAwesome name='smile-o' size={this.iconSize} color={this.iconColor} />),
       message: 'I’m glad you’re here!',
       type: 'personalAppraisal'
-    },
+    }
+  ]
+  suggestedMessagesRow2 = [
     {
       icon: (<Entypo name='thumbs-up' size={this.iconSize} color={this.iconColor} />),
       message: 'Well done on that task!',
@@ -34,7 +36,7 @@ class MessageSuggestions extends Component {
       type: 'valueAppraisal'
     }
   ]
-  suggestedMessagesRowTwo = [
+  suggestedMessagesRow3 = [
     {
       icon: (<Entypo name='tools' size={this.iconSize} color={this.iconColor} />),
       message: 'What resources do you need?',
@@ -44,7 +46,9 @@ class MessageSuggestions extends Component {
       icon: (<Entypo name='chat' size={this.iconSize} color={this.iconColor} />),
       message: 'Can I offer any advice or ideas?',
       type: 'informationalSupport'
-    },
+    }
+  ]
+  suggestedMessagesRow4 = [
     {
       icon: (<FontAwesome name='coffee' size={this.iconSize} color={this.iconColor} />),
       message: 'Want to meet for coffee?',
@@ -82,8 +86,10 @@ class MessageSuggestions extends Component {
         <Text style={styles.smallHelpCenter}>Need suggestions? Use these examples: </Text>
         <ScrollView horizontal>
           <View style={styles.flexColumn}>
-            <View style={styles.flexRowCenter}>{ this.renderSuggestions(this.suggestedMessagesRowOne) }</View>
-            <View style={styles.flexRowCenter}>{ this.renderSuggestions(this.suggestedMessagesRowTwo) }</View>
+            <View style={styles.flexRowCenter}>{ this.renderSuggestions(this.suggestedMessagesRow1) }</View>
+            <View style={styles.flexRowCenter}>{ this.renderSuggestions(this.suggestedMessagesRow2) }</View>
+            <View style={styles.flexRowCenter}>{ this.renderSuggestions(this.suggestedMessagesRow3) }</View>
+            <View style={styles.flexRowCenter}>{ this.renderSuggestions(this.suggestedMessagesRow4) }</View>
           </View>
         </ScrollView>
       </View>

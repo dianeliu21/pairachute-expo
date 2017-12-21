@@ -61,7 +61,7 @@ class ChangePassword extends Component {
           style={[styles.authInput, this.state.passwordMatch ? null : styles.authInputIncorrect, {width: this.state.screenWidth - 20}]}
         />
         <TouchableHighlight
-          style={styles.settingsButtonInverted}
+          style={[styles.settingsButtonInverted, {marginTop: 10}]}
           onPress={() => this._handleSubmit()}>
           <Text style={styles.settingsButtonTextInverted}> Change Password </Text>
         </TouchableHighlight>

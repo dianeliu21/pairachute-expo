@@ -127,7 +127,7 @@ class Prompt extends Component {
           transparent
           visible={this.state.modalVisible}
         >
-          <KeyboardAvoidingView behavior={this.state.behavior} style={styles.darkenedBackgroundOverlay}>
+          <KeyboardAvoidingView behavior={this.state.behavior} style={[styles.darkenedBackgroundOverlay, {borderColor: 'black'}]}>
             <View style={styles.promptResponseModal}>
               <View style={styles.promptModalHeaderContainer}>
                 <Text style={styles.promptModalHeading}>Pairachute Prompt</Text>
