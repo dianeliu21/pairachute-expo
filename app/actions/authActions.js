@@ -4,10 +4,19 @@ import fb from '../config/initializeFirebase'
 import { Permissions, Notifications } from 'expo';
 var db = fb.database()
 
+var reactNative = require('react-native');
+var {
+  AsyncStorage
+} = reactNative;
+
 export function login (email, password) {
   return async function (dispatch) {
     try {
       dispatch(loginAttempt())
+      AsyncStorage.multiSet([
+        ['email', email],
+        ['password', password]
+      ]);
       let response = await fb.auth().signInWithEmailAndPassword(email, password)
       let userInfo = ( await db.ref('/users/' + response.uid).once('value') ).val()
       var user = {

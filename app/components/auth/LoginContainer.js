@@ -9,10 +9,16 @@ import {
   Button,
   Text,
   TextInput,
+  TouchableHighlight,
   View
 } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 const styles = require('../../styles/styles.js')
+
+var reactNative = require('react-native');
+var {
+  AsyncStorage
+} = reactNative;
 
 class Login extends Component {
   constructor (props) {
@@ -22,6 +28,7 @@ class Login extends Component {
       email: '',
       loginDisabled: false,
       password: '',
+      loginText: 'Login',
       screenWidth: 0
     }
   }
@@ -30,49 +37,70 @@ class Login extends Component {
     header: null
   }
 
+  componentWillMount() {
+    var email;
+    var password;
+    AsyncStorage.multiGet(['email', 'password']).then((data) => {
+      if (data[0][1]) {
+        email = data[0][1]
+        password = data[1][1]
+        this.setState({
+          email: email,
+          password: password
+        })
+        this._login()
+      }
+    })
+  }
+
   async _login() {
-    this.setState({ loginDisabled: true })
+    this.setState({
+      loginText: 'Logging In...',
+      loginDisabled: true
+    })
     await this.props.login(this.state.email, this.state.password)
-    this.setState({ loginDisabled: false })
+    this.setState({
+      loginText: 'Login',
+      loginDisabled: false
+    })
   }
 
   render () {
-    return (
-      <KeyboardAwareScrollView
-        contentContainerStyle={styles.wrapper}
-        resetScrollToCoords={{x: 0, y: 0}}
-        style={{backgroundColor: 'white'}}
-      >
-        <View
-          onLayout={(e) => { this.setState({screenWidth: e.nativeEvent.layout.width}) }}
-          style={[styles.container, styles.authContainerColor]}
+      return (
+        <KeyboardAwareScrollView
+          contentContainerStyle={styles.wrapper}
+          resetScrollToCoords={{x: 0, y: 0}}
+          style={{backgroundColor: 'white'}}
         >
-          <Image
-            style={{width: 200, height: 200}}
-            source={require('./../../../resources/pairachute_graphic.png')}>
-          </Image>
-          <Text style={styles.authErrorText}>{this.props.authState.errorMessage}</Text>
-          <TextInput
-            onChangeText={(email) => this.setState({email})}
-            placeholder={'Email Address'}
-            style={[styles.authInput, {width: this.state.screenWidth - 20}]}
-          />
-          <TextInput
-            onChangeText={(password) => this.setState({password})}
-            placeholder={'Password'}
-            secureTextEntry
-            style={[styles.authInput, {width: this.state.screenWidth - 20}]}
-          />
-          <Button
-            disabled={this.state.loginDisabled}
-            onPress={() => this._login()}
-            style={styles.authButton}
-            color={'white'}
-            title={'Log In'}
-          />
-        </View>
-      </KeyboardAwareScrollView>
-    )
+          <View
+            onLayout={(e) => { this.setState({screenWidth: e.nativeEvent.layout.width}) }}
+            style={[styles.container, styles.authContainerColor]}
+          >
+            <Image
+              style={{width: 200, height: 200}}
+              source={require('./../../../resources/pairachute_graphic.png')}>
+            </Image>
+            <Text style={styles.authErrorText}>{this.props.authState.errorMessage}</Text>
+            <TextInput
+              onChangeText={(email) => this.setState({email})}
+              placeholder={'Email Address'}
+              style={[styles.authInput, {width: this.state.screenWidth - 20}]}
+            />
+            <TextInput
+              onChangeText={(password) => this.setState({password})}
+              placeholder={'Password'}
+              secureTextEntry
+              style={[styles.authInput, {width: this.state.screenWidth - 20}]}
+            />
+            <Button
+              disabled={this.state.loginDisabled}
+              onPress={() => this._login()}
+              style={styles.authButton}
+              color={'white'}
+              title={this.state.loginText}/>
+          </View>
+        </KeyboardAwareScrollView>
+      )
   }
 }
 
