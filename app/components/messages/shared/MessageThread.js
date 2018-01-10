@@ -147,12 +147,13 @@ class MessageThread extends Component {
       <View style={[styles.flexColumnCenter, styles.alignItemsStretch]}>
         <View style={[styles.backgroundOrange, styles.paddingTen]}>
           <Text style={[styles.smallHelpCenter, { color: 'white' }]}>You are currently answering the prompt:</Text>
-          <Text style={{textAlign: 'center', color: 'white'}}>{this.state.focusedPrompt.message}</Text>
+          <Text style={{textAlign: 'center', color: 'white', fontWeight: 'bold'}}>{this.state.focusedPrompt.message}</Text>
           <TouchableHighlight
+            style={styles.promptAnswerButton}
             onPress={() => this._clearFocusedPrompt()}
             underlayColor={'rgba(255,255,255,0)'}
           >
-            <Text style={[styles.smallHelpCenter, {color: 'red'}]}>Stop answering this prompt</Text>
+            <Text style={[styles.smallHelpCenter, {color: 'white'}]}>Done</Text>
           </TouchableHighlight>
         </View>
         <View style={[styles.flexRowEnd, styles.justifyContentCenter]}>

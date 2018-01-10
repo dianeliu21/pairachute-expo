@@ -15,11 +15,13 @@ class MessageSuggestions extends Component {
   suggestedMessagesRow1 = [
     {
       icon: (<FontAwesome name='road' size={this.iconSize} color={this.iconColor}/>),
+      emoji: '🛣',
       message: 'I get what you’re going through.',
       type: 'emotionalSupport'
     },
     {
       icon: (<FontAwesome name='smile-o' size={this.iconSize} color={this.iconColor} />),
+      emoji: '😀',
       message: 'I’m glad you’re here!',
       type: 'personalAppraisal'
     }
@@ -27,11 +29,13 @@ class MessageSuggestions extends Component {
   suggestedMessagesRow2 = [
     {
       icon: (<Entypo name='thumbs-up' size={this.iconSize} color={this.iconColor} />),
+      emoji: '👍',
       message: 'Well done on that task!',
       type: 'workAppraisal'
     },
     {
       icon: (<Ionicons name='ios-paper' size={this.iconSize} color={this.iconColor} />),
+      emoji: '📄',
       message: 'The work you’re doing is important!',
       type: 'valueAppraisal'
     }
@@ -39,11 +43,13 @@ class MessageSuggestions extends Component {
   suggestedMessagesRow3 = [
     {
       icon: (<Entypo name='tools' size={this.iconSize} color={this.iconColor} />),
+      emoji: '🛠',
       message: 'What resources do you need?',
       type: 'instrumentalSupport'
     },
     {
       icon: (<Entypo name='chat' size={this.iconSize} color={this.iconColor} />),
+      emoji: '💬',
       message: 'Can I offer any advice or ideas?',
       type: 'informationalSupport'
     }
@@ -51,22 +57,29 @@ class MessageSuggestions extends Component {
   suggestedMessagesRow4 = [
     {
       icon: (<FontAwesome name='coffee' size={this.iconSize} color={this.iconColor} />),
+      emoji: '☕️',
       message: 'Want to meet for coffee?',
       type: 'coffee'
     },
     {
       icon: (<MaterialCommunityIcons name='human-greeting' size={this.iconSize} color={this.iconColor} />),
+      emoji: '🙏',
       message: 'Thank you for your support!',
       type: 'gratitude'
     },
   ]
+
+  concatMessage (emoji, message) {
+    emojiSpace = emoji.concat(' ');
+    return emojiSpace.concat(message);
+  }
 
   renderSuggestions = (suggestions) => {
     return suggestions.map((item) => {
       return (
         <TouchableHighlight
           key={item.type}
-          onPress={() => this.props.onPressSuggestion(item.message)}
+          onPress={() => this.props.onPressSuggestion(this.concatMessage(item.emoji, item.message))}
           underlayColor={'rgba(255,255,255,0)'}
         >
           <View style={[styles.messageBubble, styles.backgroundTeal, styles.marginFive, styles.flexRowCenter]}>
