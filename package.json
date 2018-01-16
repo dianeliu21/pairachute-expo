@@ -4,6 +4,7 @@
   "private": true,
   "devDependencies": {
     "babel-eslint": "^7.2.3",
+    "babel-plugin-transform-async-to-generator": "^6.24.1",
     "jest-expo": "^0.4.0",
     "react-native-scripts": "0.0.29",
     "react-test-renderer": "16.0.0-alpha.6"
@@ -20,23 +21,26 @@
     "preset": "jest-expo"
   },
   "dependencies": {
+    "@expo/vector-icons": "^6.2.2",
+    "babel-preset-expo": "^4.0.0",
     "expo": "^21.0.0",
     "firebase": "^3.9.0",
+    "jest-expo": "^21.0.0",
     "prop-types": "^15.6.0",
     "react": "16.0.0-alpha.12",
     "react-native": "https://github.com/expo/react-native/archive/sdk-21.0.2.tar.gz",
     "react-native-check-box": "1.0.4",
     "react-native-device-info": "^0.12.1",
     "react-native-keyboard-aware-scroll-view": "^0.2.8",
+    "react-native-keyboard-spacer": "^0.4.1",
     "react-native-material-initials": "0.0.10",
     "react-navigation": "^1.0.0-beta.9",
     "react-redux": "^5.0.4",
     "redux": "^3.6.0",
     "redux-logger": "^3.0.1",
     "redux-thunk": "^2.2.0",
-    "standard": "^10.0.2",
-    "jest-expo": "^21.0.0",
-    "sentry-expo": "~1.6.0"
+    "sentry-expo": "~1.6.0",
+    "standard": "^10.0.2"
   },
   "standard": {
     "parser": "babel-eslint"

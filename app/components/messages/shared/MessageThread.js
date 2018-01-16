@@ -3,12 +3,14 @@ import {
   Button,
   FlatList,
   KeyboardAvoidingView,
+  ScrollView,
   Text,
   TextInput,
   TouchableHighlight,
   View
 } from 'react-native'
 import { FontAwesome } from '@expo/vector-icons'
+import KeyboardSpacer from 'react-native-keyboard-spacer'
 import MessageBubble from './MessageBubble'
 import MessageSuggestions from './MessageSuggestions'
 import Prompt from './Prompt'
@@ -113,32 +115,34 @@ class MessageThread extends Component {
 
   _renderNormalTextInput = () => {
     return (
-      <View style={[styles.flexRowEnd, styles.justifyContentCenter]}>
-        <TouchableHighlight
-          onPress={() => this._toggleShowSuggestions()}
-          underlayColor={'rgba(255,255,255,0)'}
-        >
-          <View style={{marginBottom: 10, marginLeft: 15}}>
-            <FontAwesome name='plus-circle' size={35} color={constants.teal}/>
+        <View style={[styles.flexRowEnd, styles.justifyContentCenter]}>
+          <TouchableHighlight
+            onPress={() => this._toggleShowSuggestions()}
+            underlayColor={'rgba(255,255,255,0)'}
+          >
+            <View style={{marginBottom: 10, marginLeft: 15}}>
+              <FontAwesome name='plus-circle' size={35} color={constants.teal}/>
+            </View>
+          </TouchableHighlight>
+          <ScrollView keyboardDismissMode='on-drag' keyboardShouldPersistTaps='never' style={styles.wrapper}>
+            <TextInput
+              multiline
+              onChangeText={(messageText) => this.setState({messageText})}
+              onContentSizeChange={(e) => this._updateInputHeight(e.nativeEvent.contentSize.height)}
+              onFocus={() => this._hideSuggestions()}
+              placeholder={'Type a message'}
+              style={[styles.messageThreadInput, { height: this.state.height + 15, width: this.state.screenWidth - 130 }]}
+              value={this.state.messageText}
+            />
+          </ScrollView>
+          <View style={{paddingBottom: 10, paddingRight: 10}}>
+            <Button
+              onPress={() => this._sendMessage()}
+              style={{margin: 0}}
+              title={'Send'}
+            />
           </View>
-        </TouchableHighlight>
-        <TextInput
-          multiline
-          onChangeText={(messageText) => this.setState({messageText})}
-          onContentSizeChange={(e) => this._updateInputHeight(e.nativeEvent.contentSize.height)}
-          onFocus={() => this._hideSuggestions()}
-          placeholder={'Type a message'}
-          style={[styles.messageThreadInput, { height: this.state.height + 15, width: this.state.screenWidth - 110 }]}
-          value={this.state.messageText}
-        />
-        <View style={{paddingBottom: 10, paddingRight: 10}}>
-          <Button
-            onPress={() => this._sendMessage()}
-            style={{margin: 0}}
-            title={'Send'}
-          />
         </View>
-      </View>
     )
   }
 
@@ -157,14 +161,16 @@ class MessageThread extends Component {
           </TouchableHighlight>
         </View>
         <View style={[styles.flexRowEnd, styles.justifyContentCenter]}>
+          <ScrollView keyboardDismissMode='on-drag' keyboardShouldPersistTaps='never' style={styles.wrapper}>
           <TextInput
             multiline
             onChangeText={(promptResponseText) => this.setState({promptResponseText})}
             onContentSizeChange={(e) => this._updateInputHeight(e.nativeEvent.contentSize.height)}
             placeholder={'Type an answer'}
-            style={[styles.messageThreadInput, { height: this.state.height + 15, width: this.state.screenWidth - 75 }]}
+            style={[styles.messageThreadInput, { height: this.state.height + 15, width: this.state.screenWidth - 85 }]}
             value={this.state.promptResponseText}
           />
+          </ScrollView>
           <View style={{paddingBottom: 10, paddingRight: 10}}>
             <Button
               onPress={() => this._sendPromptResponse()}
