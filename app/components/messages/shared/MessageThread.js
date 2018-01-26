@@ -120,8 +120,8 @@ class MessageThread extends Component {
             onPress={() => this._toggleShowSuggestions()}
             underlayColor={'rgba(255,255,255,0)'}
           >
-            <View style={{marginBottom: 10, marginLeft: 15}}>
-              <FontAwesome name='plus-circle' size={35} color={constants.teal}/>
+            <View style={{marginBottom: 15, marginLeft: 20}}>
+              <FontAwesome name='quote-right' size={25} color={constants.teal}/>
             </View>
           </TouchableHighlight>
           <ScrollView keyboardDismissMode='on-drag' keyboardShouldPersistTaps='never' style={styles.wrapper}>
@@ -161,6 +161,14 @@ class MessageThread extends Component {
           </TouchableHighlight>
         </View>
         <View style={[styles.flexRowEnd, styles.justifyContentCenter]}>
+          <TouchableHighlight
+            onPress={() => this._toggleShowSuggestions()}
+            underlayColor={'rgba(255,255,255,0)'}
+          >
+            <View style={{marginBottom: 15, marginLeft: 20}}>
+              <FontAwesome name='quote-right' size={25} color={constants.teal}/>
+            </View>
+          </TouchableHighlight>
           <ScrollView keyboardDismissMode='on-drag' keyboardShouldPersistTaps='never' style={styles.wrapper}>
           <TextInput
             multiline
