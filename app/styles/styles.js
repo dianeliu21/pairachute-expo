@@ -30,6 +30,10 @@ const styles = StyleSheet.create({
     margin: 0,
     padding: 0
   },
+  borderCurve: {
+    borderRadius: 5,
+    alignItems: 'center',
+  },
 
   // Flexbox
   alignItemsStretch: {
@@ -139,6 +143,9 @@ const styles = StyleSheet.create({
   padding_10: {
     padding: 10,
   },
+  padding_20: {
+    padding: 20,
+  },
   padding_50: {
     padding: 50
   },
@@ -199,6 +206,9 @@ const styles = StyleSheet.create({
   banner: {
     height: 50,
     backgroundColor: '#f9f9f9',
+    borderWidth: 1,
+    borderTopWidth: 0,
+    borderColor: 'gray'
   },
   bannerText: {
     textAlign: 'center',

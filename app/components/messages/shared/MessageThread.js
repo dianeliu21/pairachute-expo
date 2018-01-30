@@ -175,7 +175,7 @@ class MessageThread extends Component {
             onChangeText={(promptResponseText) => this.setState({promptResponseText})}
             onContentSizeChange={(e) => this._updateInputHeight(e.nativeEvent.contentSize.height)}
             placeholder={'Type an answer'}
-            style={[styles.messageThreadInput, { height: this.state.height + 15, width: this.state.screenWidth - 85 }]}
+            style={[styles.messageThreadInput, { height: this.state.height + 15, width: this.state.screenWidth - 130}]}
             value={this.state.promptResponseText}
           />
           </ScrollView>

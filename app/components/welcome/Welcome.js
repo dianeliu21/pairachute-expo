@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import {
   Button,
+  Image,
   Text,
   TouchableHighlight,
   View,
@@ -49,33 +50,39 @@ class Welcome extends Component {
   render () {
     return (
       <View style={[styles.wrapper, styles.backgroundPastelBlue, {paddingTop: 100, alignItems: 'center'}]}>
-        <Text style={[styles.f_30, styles.colorWhite]}>Welcome to Pairachute!</Text>
+        <Text style={[styles.f_30, styles.colorWhite, {paddingBottom: 20}]}>Welcome to Pairachute!</Text>
+        <Text style={[styles.f_10, styles.colorWhite]}>An app to support mentor</Text>
+        <Text style={[styles.f_10, styles.colorWhite]}>& mentee relationships</Text>
         <View style={styles.padding_50}>
-          <View style={styles.padding_10}>
+          <View style={styles.padding_21}>
             <View style={styles.flexRowCenter}>
               <SimpleLineIcons name='bell' size={25} color='white' />
-              <Text style={[styles.f_20, styles.padding_10, styles.colorWhite]}>Step 1:</Text>
+              <Text style={[styles.f_20, styles.padding_10, styles.colorWhite]}>Step 1: Notify</Text>
             </View>
-            <Text style={[styles.colorWhite]}>Receive notifications at 9:15am on Tuesday and Thursday to reflect.</Text>
+            <Image
+              style={[styles.borderCurve, {height: 80, width: 200}]}
+              source={require('../../../resources/Screenshots/step1.png')}
+            />
           </View>
           <View style={styles.padding_10}>
             <View style={styles.flexRowCenter}>
               <SimpleLineIcons name='note' size={25} color='white' />
-              <Text style={[styles.f_20, styles.padding_10, styles.colorWhite]}>Step 2:</Text>
+              <Text style={[styles.f_20, styles.padding_10, styles.colorWhite]}>Step 2: Answer</Text>
             </View>
-            <View>
-              <Text style={[styles.colorWhite]}>
-                Reflect on your progress in Pairachute or snooze for later in
-                the day! All answers will be kept confidential.
-              </Text>
-            </View>
+            <Image
+              style={[styles.borderCurve, {height: 80, width: 200}]}
+              source={require('../../../resources/Screenshots/step2.png')}
+            />
           </View>
           <View style={styles.padding_10}>
             <View style={styles.flexRowCenter}>
               <SimpleLineIcons name='bubbles' size={25} color='white' />
-              <Text style={[styles.f_20, styles.padding_10, styles.colorWhite]}>Step 3:</Text>
+              <Text style={[styles.f_20, styles.padding_10, styles.colorWhite]}>Step 3: Support</Text>
             </View>
-            {this._renderStep3Text()}
+            <Image
+              style={[styles.borderCurve, {height: 80, width: 200}]}
+              source={require('../../../resources/Screenshots/step3.png')}
+            />
           </View>
         </View>
       </View>
