@@ -198,7 +198,6 @@ const styles = StyleSheet.create({
   },
   banner: {
     height: 50,
-    marginTop: 20,
     backgroundColor: '#f9f9f9',
   },
   bannerText: {

@@ -213,20 +213,20 @@ class MessageThread extends Component {
   }
 
   render () {
-    console.log(this.props.focusedThread.users)
     return (
       <KeyboardAvoidingView
-        onLayout={(e) => { this.setState({screenWidth: e.nativeEvent.layout.width}) }}
         behavior={this.state.behavior}
         style={styles.wrapper}
         keyboardVerticalOffset={0}>
         <View
-          style={[styles.banner, {width: this.state.screenWidth}]}>
-          <Text style={styles.bannerText}>
-            {"Paired with " + this._renderPairName()}
-          </Text>
-        </View>
-        <View>
+          onLayout={(e) => { this.setState({screenWidth: e.nativeEvent.layout.width}) }}
+          style={[styles.wrapper, {paddingTop: 20}]}>
+          <View
+            style={[styles.banner, {width: this.state.screenWidth}]}>
+            <Text style={styles.bannerText}>
+              {"Paired with " + this._renderPairName()}
+            </Text>
+          </View>
           <FlatList
             data={this.props.focusedThread.messages}
             ListFooterComponent={this._renderLoadOldMessages}
