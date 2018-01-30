@@ -387,6 +387,12 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center'
   },
+  promptTimestamp: {
+    color: 'white',
+    fontSize: 10,
+    fontWeight: 'bold',
+    textAlign: 'center'
+  },
   promptResponseContainer: {
     borderColor: constants.mediumGray,
     borderBottomWidth: 1,

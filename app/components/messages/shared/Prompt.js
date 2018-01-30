@@ -146,6 +146,15 @@ class Prompt extends Component {
     )
   }
 
+  _renderPromptDate () {
+    timestamp = this.props.data.timestamp
+    console.log('timestamp')
+    console.log(timestamp)
+    console.log(Date(timestamp * 1000))
+    date = Date(timestamp * 1000)
+    return date.toString().slice(0,10);
+  }
+
   render () {
     answered = (this.props.senderId in this.props.data.responses)
     return (
@@ -186,6 +195,7 @@ class Prompt extends Component {
               color={'white'} size={25} text={'Pairachute'} />
             <Text style={styles.promptHeading}>Pairachute Prompt</Text>
           </View>
+          <Text style={styles.promptTimestamp}>{this._renderPromptDate()}</Text>
           <View style={styles.promptTextContainer}>
             <Text style={{color: 'white'}}>{this.props.data.message}</Text>
           </View>
