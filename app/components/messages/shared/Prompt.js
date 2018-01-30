@@ -9,6 +9,7 @@ import {
   View
 } from 'react-native'
 import MaterialInitials from 'react-native-material-initials/native'
+const constants = require('../../../styles/constants.js')
 const styles = require('../../../styles/styles.js')
 
 class Prompt extends Component {
@@ -119,7 +120,34 @@ class Prompt extends Component {
     })
   }
 
+  _unanswered () {
+    return (
+      <TouchableHighlight
+        onPress={() => this.props.updateFocusedPrompt(this.props.data)}
+        underlayColor={'rgba(255,255,255,0)'}
+      >
+        <View>
+          {this.promptResponses}
+          <View style={styles.promptAnswerButton}>
+            <Text style={styles.promptAnswerButtonText}>Answer</Text>
+          </View>
+        </View>
+      </TouchableHighlight>
+    )
+  }
+  _answered () {
+    return (
+      <View>
+      {this.promptResponses}
+      <View style={styles.promptDoneButton}>
+        <Text style={styles.promptDoneButtonText}>Done!</Text>
+      </View>
+    </View>
+    )
+  }
+
   render () {
+    answered = (this.props.senderId in this.props.data.responses)
     return (
       <View>
         <Modal
@@ -153,23 +181,15 @@ class Prompt extends Component {
         </Modal>
         <View style={[styles.promptContainer, styles.backgroundOrange]}>
           <View style={styles.promptHeadingContainer}>
-            <MaterialInitials backgroundColor={'#659EFF'} color={'white'} size={25} text={'Pairachute'} />
+            <MaterialInitials
+              backgroundColor={(answered) ? constants.promptDoneButtonColor : '#659EFF'}
+              color={'white'} size={25} text={'Pairachute'} />
             <Text style={styles.promptHeading}>Pairachute Prompt</Text>
           </View>
           <View style={styles.promptTextContainer}>
             <Text style={{color: 'white'}}>{this.props.data.message}</Text>
           </View>
-          <TouchableHighlight
-            onPress={() => this.props.updateFocusedPrompt(this.props.data)}
-            underlayColor={'rgba(255,255,255,0)'}
-          >
-            <View>
-              {this.promptResponses}
-              <View style={styles.promptAnswerButton}>
-                <Text style={styles.promptAnswerButtonText}>Answer</Text>
-              </View>
-            </View>
-          </TouchableHighlight>
+          {answered ? this._answered() : this._unanswered()}
         </View>
       </View>
     )

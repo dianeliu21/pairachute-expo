@@ -202,7 +202,7 @@ class MessageThread extends Component {
 
   _renderPairName = () => {
     users = this.props.focusedThread.users
-    if (users != null) {
+    if (users) {
       for (userKey in users) {
         if (userKey != this.props.user.uid) {
           return users[userKey]
