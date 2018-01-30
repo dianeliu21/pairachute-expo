@@ -148,15 +148,14 @@ class Prompt extends Component {
 
   _renderPromptDate () {
     timestamp = this.props.data.timestamp
-    console.log('timestamp')
-    console.log(timestamp)
-    console.log(Date(timestamp * 1000))
-    date = Date(timestamp * 1000)
-    return date.toString().slice(0,10);
+    return Date(timestamp * 1000).toString().slice(0,10);
   }
 
   render () {
-    answered = (this.props.senderId in this.props.data.responses)
+    answered = false
+    if (this.props.data.responses) {
+      answered = (this.props.senderId in this.props.data.responses)
+    }
     return (
       <View>
         <Modal
