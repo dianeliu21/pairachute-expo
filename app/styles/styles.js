@@ -196,6 +196,18 @@ const styles = StyleSheet.create({
       {scaleY: -1}
     ]
   },
+  banner: {
+    height: 50,
+    marginTop: 20,
+    backgroundColor: '#f9f9f9',
+  },
+  bannerText: {
+    textAlign: 'center',
+    color: 'black',
+    //fontWeight: 'bold',
+    fontSize: 16,
+    margin: 20,
+  },
 
   // Message List
   messageListContainer: {
@@ -326,6 +338,16 @@ const styles = StyleSheet.create({
     height: 200,
     margin: 10,
     padding: 10
+  },
+  promptDoneButton: {
+    alignSelf: 'center',
+    backgroundColor: constants.promptDoneButtonColor,
+    padding: 10,
+    borderRadius: 5
+  },
+  promptDoneButtonText: {
+    fontWeight: 'bold',
+    color: 'white'
   },
   promptContainer: {
     alignItems: 'center',

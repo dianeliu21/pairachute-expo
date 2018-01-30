@@ -200,12 +200,33 @@ class MessageThread extends Component {
     )
   }
 
+  _renderPairName = () => {
+    users = this.props.focusedThread.users
+    if (users != null) {
+      for (userKey in users) {
+        if (userKey != this.props.user.uid) {
+          return users[userKey]
+        }
+      }
+    }
+    return "Unknown";
+  }
+
   render () {
+    console.log(this.props.focusedThread.users)
     return (
-      <KeyboardAvoidingView behavior={this.state.behavior} style={styles.wrapper} keyboardVerticalOffset={0}>
+      <KeyboardAvoidingView
+        onLayout={(e) => { this.setState({screenWidth: e.nativeEvent.layout.width}) }}
+        behavior={this.state.behavior}
+        style={styles.wrapper}
+        keyboardVerticalOffset={0}>
         <View
-          onLayout={(e) => { this.setState({screenWidth: e.nativeEvent.layout.width}) }}
-          style={[styles.wrapper, {paddingTop: 20}]}>
+          style={[styles.banner, {width: this.state.screenWidth}]}>
+          <Text style={styles.bannerText}>
+            {"Paired with " + this._renderPairName()}
+          </Text>
+        </View>
+        <View>
           <FlatList
             data={this.props.focusedThread.messages}
             ListFooterComponent={this._renderLoadOldMessages}
