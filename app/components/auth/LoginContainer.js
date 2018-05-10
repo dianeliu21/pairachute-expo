@@ -67,39 +67,46 @@ class Login extends Component {
 
   render () {
       return (
-        <KeyboardAwareScrollView
-          contentContainerStyle={styles.wrapper}
-          resetScrollToCoords={{x: 0, y: 0}}
-          style={{backgroundColor: 'white'}}
-        >
-          <View
-            onLayout={(e) => { this.setState({screenWidth: e.nativeEvent.layout.width}) }}
-            style={[styles.container, styles.authContainerColor]}
+        !this.state.loginDisabled
+        ? (<KeyboardAwareScrollView
+            contentContainerStyle={styles.wrapper}
+            resetScrollToCoords={{x: 0, y: 0}}
+            style={{backgroundColor: 'white'}}
           >
+            <View
+              onLayout={(e) => { this.setState({screenWidth: e.nativeEvent.layout.width}) }}
+              style={[styles.container, styles.authContainerColor]}
+            >
+              <Image
+                style={{width: 200, height: 200}}
+                source={require('./../../../resources/pairachute_logo.png')}>
+              </Image>
+              <Text style={styles.authErrorText}>{this.props.authState.errorMessage}</Text>
+              <TextInput
+                onChangeText={(email) => this.setState({email})}
+                placeholder={'Email Address'}
+                style={[styles.authInput, {width: this.state.screenWidth - 20}]}
+              />
+              <TextInput
+                onChangeText={(password) => this.setState({password})}
+                placeholder={'Password'}
+                secureTextEntry
+                style={[styles.authInput, {width: this.state.screenWidth - 20}]}
+              />
+              <Button
+                disabled={this.state.loginDisabled}
+                onPress={() => this._login()}
+                style={styles.authButton}
+                color={'white'}
+                title={this.state.loginText}/>
+            </View>
+          </KeyboardAwareScrollView>)
+        : (<View style={styles.loggingInContainer}>
             <Image
-              style={{width: 200, height: 200}}
-              source={require('./../../../resources/pairachute_graphic.png')}>
-            </Image>
-            <Text style={styles.authErrorText}>{this.props.authState.errorMessage}</Text>
-            <TextInput
-              onChangeText={(email) => this.setState({email})}
-              placeholder={'Email Address'}
-              style={[styles.authInput, {width: this.state.screenWidth - 20}]}
-            />
-            <TextInput
-              onChangeText={(password) => this.setState({password})}
-              placeholder={'Password'}
-              secureTextEntry
-              style={[styles.authInput, {width: this.state.screenWidth - 20}]}
-            />
-            <Button
-              disabled={this.state.loginDisabled}
-              onPress={() => this._login()}
-              style={styles.authButton}
-              color={'white'}
-              title={this.state.loginText}/>
-          </View>
-        </KeyboardAwareScrollView>
+              style={styles.loggingInGif}
+              source={require('./../../../resources/loggingIn.gif')}/>
+            <Text style={styles.loggingInText}> Logging In... </Text>
+           </View>)
       )
   }
 }

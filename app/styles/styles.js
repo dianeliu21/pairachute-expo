@@ -188,6 +188,23 @@ const styles = StyleSheet.create({
   authContainerColor: {
     backgroundColor: constants.pastelBlue,
   },
+  loggingInContainer: {
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#e7eff1',
+  },
+  loggingInGif: {
+    height: 200,
+    width: 200,
+    marginBottom: 20,
+  },
+  loggingInText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    textAlign: 'center'
+  },
 
   // TabBar Styles
   tabBar: {
@@ -210,12 +227,36 @@ const styles = StyleSheet.create({
     borderTopWidth: 0,
     borderColor: 'gray'
   },
+  bannerContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 10,
+    marginLeft: 10,
+    marginRight: 10,
+  },
   bannerText: {
+    alignSelf: 'center',
     textAlign: 'center',
     color: 'black',
     //fontWeight: 'bold',
     fontSize: 16,
-    margin: 20,
+  },
+  streakContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+  },
+  streakText: {
+    alignSelf: 'center',
+    color: constants.orange,
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
+  streakIcon: {
+    alignSelf: 'center',
+    width: 25,
+    height: 25,
   },
 
   // Message List
@@ -253,6 +294,10 @@ const styles = StyleSheet.create({
   // Message Bubble
   messageAvatar: {
     marginBottom: 2
+  },
+  messageAvatarImage: {
+    width: 30,
+    height: 30,
   },
   messageBubble: {
     borderRadius: 15,
@@ -452,12 +497,55 @@ const styles = StyleSheet.create({
     backgroundColor: 'red'
   },
 
+  // Encouragement Pop-up
+  modalColor: {
+    color: constants.orange,
+  },
+  encouragementContainer: {
+    alignItems: 'center',
+    backgroundColor: constants.orange,
+  },
+  encouragementText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginTop: 200,
+    marginBottom: 50,
+    color: 'white',
+  },
+  encouragementGif: {
+    alignItems: 'center',
+    margin: 15,
+  },
+  encouragementButton: {
+    backgroundColor: 'white',
+    marginTop: 50,
+    marginBottom: 300,
+    padding: 5,
+    borderRadius: 5,
+  },
+  encouragementButtonText: {
+    fontSize: 20,
+    color: constants.orange,
+  },
+  notPairedMessageContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  notPairedMessage: {
+    textAlign: 'center',
+    fontSize: 25,
+    fontWeight: 'bold',
+    color: constants.orange,
+  },
+
   // Settings
   settingsText: {
     fontSize: 20,
     fontWeight: 'bold',
+    margin: 15,
     marginTop: 15,
-    marginBottom: 25
+    marginBottom: 25,
   },
   settingsButton: {
     alignItems: 'center',
@@ -477,8 +565,33 @@ const styles = StyleSheet.create({
     color: 'white'
   },
   settingsButtonTextInverted: {
-    color: constants.rightpointRed
-  }
+    color: constants.rightpointRed,
+  },
+  settingsAvatarContainer: {
+    flex: 1,
+    padding: 8,
+    flexDirection: 'column', // main axis
+    justifyContent: 'center', // main axis
+    alignItems: 'center', // cross axis
+  },
+  settingsAvatarSelectedContainer: {
+    flex: 1,
+    flexDirection: 'column', // main axis
+    justifyContent: 'center', // main axis
+    alignItems: 'center', // cross axis
+  },
+  settingsAvatar: {
+    width: 100,
+    height: 100,
+    margin: 20,
+    alignItems: 'center',
+  },
+  settingsAvatarSelected: {
+    width: 100,
+    height: 5,
+    backgroundColor: constants.orange
+  },
+
 })
 
 module.exports = styles

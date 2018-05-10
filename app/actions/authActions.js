@@ -23,6 +23,7 @@ export function login (email, password) {
         displayName: response.displayName || userInfo.displayName,
         email: response.email || userInfo.email,
         emailVerified: response.emailVerified,
+        avatarIndex: userInfo.avatarIndex,
         firstName: userInfo.firstName,
         providerData: response.providerData,
         refreshToken: response.refreshToken,
@@ -107,7 +108,8 @@ export function signup (firstName, lastName, email, phoneNumber, password) {
         firstName: firstName,
         lastName: lastName,
         email: email,
-        phone_number: phoneNumber
+        phone_number: phoneNumber,
+        avatarIndex: "None",
       })
       dispatch(signupSuccess(user))
       dispatch(NavigationActions.navigate({routeName: 'Home'}))
@@ -122,6 +124,36 @@ export function switchLoginToSignup () {
   return function (dispatch) {
     dispatch(NavigationActions.navigate({routeName: 'Signup'}))
     dispatch(switchLoginSignup())
+  }
+}
+
+export function navToChangeAvatar () {
+  return function (dispatch) {
+    dispatch(NavigationActions.navigate({routeName: 'ChangeAvatar'}))
+  }
+}
+
+export function changeAvatar (avatarIndex) {
+  return async function (dispatch) {
+    try {
+      dispatch({type: types.CHANGE_AVATAR_ATTEMPT})
+
+      var updates = {}
+      var user = fb.auth().currentUser;
+      let userInfo = (await db.ref('/users/' + user.uid).once('value')).val()
+      var newUserInfo = Object.assign({}, userInfo, {
+        avatarIndex: avatarIndex
+      })
+      updates['/users/' + user.uid] = newUserInfo
+      await db.ref().update(updates)
+
+      var successMessage = 'Avatar change successful!'
+      dispatch({type: types.CHANGE_AVATAR_PASSWORD_SUCCESS, successMessage})
+    } catch (error) {
+      var errorMessage = error.message
+      console.log('change avatar failure', errorMessage)
+      dispatch({type: types.CHANGE_AVATAR_FAILURE, errorMessage})
+    }
   }
 }
 

@@ -22,16 +22,22 @@ export function loadMessages (type, threadId) {
           return Object.assign({}, msgObject.val()[key], {key: key})
         })
       }
-      console.log('this is thread id', threadId)
+
+      var users = {}
+      for (var userId in threadInfo.users) {
+        var name = threadInfo.users[userId]
+        let avatar = await db.ref('/users/' + userId + '/avatarIndex').once('value')
+        var avatarIndex = avatar.val()
+        users[userId] = {'name': name, 'avatarIndex': avatarIndex}
+      }
 
       var focusedThread = {
         id: threadId,
         oldestMsgKey: msgs.length > 0 ? msgs[0].key : null,
         messages: msgs.reverse(),
-        users: threadInfo.users,
+        users: users,
       }
 
-      console.log('here2')
       if (type === 'chatOnly') {
         dispatch({type: types.INITIAL_LOAD_CHAT_ONLY_MESSAGES_SUCCESS, focusedThread})
       } else if (type === 'reflectionOnly') {
@@ -118,7 +124,9 @@ export function loadThreadList () {
               let firstName = await db.ref('/users/' + userids[i] + '/firstName').once('value')
               let lastName = await db.ref('/users/' + userids[i] + '/lastName').once('value')
               var name = firstName.val() + ' ' + lastName.val()
-              users[userids[i]] = name
+              let avatar = await db.ref('/users/' + userids[i] + '/avatarIndex').once('value')
+              var avatarIndex = avatar.val()
+              users[userids[i]] = {'name': name, 'avatarIndex': avatarIndex}
               if (userids[i] !== uid) names.push(name)
             }
             title = names.join(', ')

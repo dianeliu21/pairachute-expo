@@ -2,7 +2,9 @@ import React, {Component} from 'react'
 import {
   Button,
   FlatList,
+  Image,
   KeyboardAvoidingView,
+  Modal,
   ScrollView,
   Text,
   TextInput,
@@ -30,6 +32,7 @@ class MessageThread extends Component {
       promptResponseText: '',
       screenWidth: 0,
       showSuggestions: false,
+      showEncouragement: false,
     }
   }
 
@@ -47,12 +50,18 @@ class MessageThread extends Component {
 
   _sendMessage () {
     this.props.sendMessage(this.state.messageText, this.props.user.uid, this.props.user.displayName, this.props.focusedThread.id)
+    this._toggleEncouragement()
     this.setState({ messageText: '' })
   }
 
   _sendPromptResponse () {
     this.props.submitPromptResponse(this.state.focusedPrompt, this.state.promptResponseText, this.props.user.uid, this.props.focusedThread.id)
+    this._toggleEncouragement()
     this.setState({ promptResponseText: '' })
+  }
+
+  _toggleEncouragement() {
+    this.setState({ showEncouragement: !this.state.showEncouragement })
   }
 
   _updateInputHeight = (height) => {
@@ -149,7 +158,7 @@ class MessageThread extends Component {
   _renderPromptTextInput = () => {
     return (
       <View style={[styles.flexColumnCenter, styles.alignItemsStretch]}>
-        <View style={[styles.backgroundOrange, styles.paddingTen]}>
+        <View style={[styles.backgroundTeal, styles.paddingTen]}>
           <Text style={[styles.smallHelpCenter, { color: 'white' }]}>You are currently answering the prompt:</Text>
           <Text style={{textAlign: 'center', color: 'white', fontWeight: 'bold'}}>{this.state.focusedPrompt.message}</Text>
           <TouchableHighlight
@@ -201,46 +210,93 @@ class MessageThread extends Component {
   }
 
   _renderPairName = () => {
+    var name = "unknown"
     users = this.props.focusedThread.users
     if (users) {
       for (userKey in users) {
         if (userKey != this.props.user.uid) {
-          return users[userKey]
+          name = users[userKey].name
         }
       }
     }
-    return "Unknown";
+    return this.props.type !== 'reflectionOnly'
+      ? "Paired with " + name
+      : 'Solo';
+  }
+
+  _renderStreak () {
+    return this.props.focusedThread.messages.length
+  }
+
+  _renderEncouragement() {
+    return (
+      <Modal
+        style={styles.modalColor}
+         animationType="slide"
+         transparent={false}
+         visible={this.state.showEncouragement}
+         onRequestClose={() => {
+           alert('Modal has been closed.');
+         }}>
+         <View style={styles.encouragementContainer}>
+           <Text style={styles.encouragementText}>Great Job 🎉</Text>
+           <Image
+             style={styles.encouragementGif}
+             source={require('../../../../resources/gifs/kid.gif')}/>
+           <TouchableHighlight
+             style={styles.encouragementButton}
+             onPress={() => {this._toggleEncouragement()}}>
+             <Text style={styles.encouragementButtonText}>Close</Text>
+           </TouchableHighlight>
+         </View>
+       </Modal>
+    )
   }
 
   render () {
-    return (
-      <KeyboardAvoidingView
-        behavior={this.state.behavior}
-        style={styles.wrapper}
-        keyboardVerticalOffset={0}>
-        <View
-          onLayout={(e) => { this.setState({screenWidth: e.nativeEvent.layout.width}) }}
-          style={[styles.wrapper, {paddingTop: 20}]}>
-          <View
-            style={[styles.banner, {width: this.state.screenWidth}]}>
-            <Text style={styles.bannerText}>
-              {"Paired with " + this._renderPairName()}
-            </Text>
-          </View>
-          <FlatList
-            data={this.props.focusedThread.messages}
-            ListFooterComponent={this._renderLoadOldMessages}
-            ref={(component) => this._flatList = component}
-            renderItem={(data) => this._renderMessageBubble(data)}
-            style={[styles.inverted, styles.messageListContainer]}
-          />
-        </View>
-        <View>
-          { this.state.focusedPrompt ? this._renderPromptTextInput() : this._renderNormalTextInput() }
-          { this.state.showSuggestions && this._renderSuggestions() }
-        </View>
-      </KeyboardAvoidingView>
-    )
+    console.log(this.props.focusedThread.id)
+      return (
+        this.props.focusedThread.id ?
+          (<KeyboardAvoidingView
+            behavior={this.state.behavior}
+            style={styles.wrapper}
+            keyboardVerticalOffset={0}>
+            { this.state.showEncouragement ? this._renderEncouragement() : null }
+            <View
+              onLayout={(e) => { this.setState({screenWidth: e.nativeEvent.layout.width}) }}
+              style={[styles.wrapper, {paddingTop: 20}]}>
+              <View
+                style={[styles.banner, {width: this.state.screenWidth}]}>
+                <View style={styles.bannerContainer}>
+                  <Text style={styles.bannerText}>
+                    {this._renderPairName()}
+                  </Text>
+                  <View style={styles.streakContainer}>
+                    <Text style={styles.streakText}>{this._renderStreak()}</Text>
+                    <Image
+                      style={styles.streakIcon}
+                      source={require('../../../../resources/streak.png')}/>
+                  </View>
+                </View>
+               </View>
+               <FlatList
+                data={this.props.focusedThread.messages}
+                ListFooterComponent={this._renderLoadOldMessages}
+                ref={(component) => this._flatList = component}
+                renderItem={(data) => this._renderMessageBubble(data)}
+                style={[styles.inverted, styles.messageListContainer]}
+               />
+             </View>
+
+            <View>
+              { this.state.focusedPrompt ? this._renderPromptTextInput() : this._renderNormalTextInput() }
+              { this.state.showSuggestions && this._renderSuggestions() }
+            </View>
+          </KeyboardAvoidingView>)
+        : (<View style={styles.notPairedMessageContainer}>
+            <Text style={styles.notPairedMessage}> Not paired with anyone.</Text>
+           </View>)
+      )
   }
 
   _clearFocusedPrompt() {

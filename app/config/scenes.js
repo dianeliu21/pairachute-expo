@@ -1,5 +1,6 @@
 import { TabNavigator } from 'react-navigation'
 
+import ChangeAvatarContainer from '../components/settings/ChangeAvatarContainer'
 import ChangePasswordContainer from '../components/settings/ChangePasswordContainer'
 import DummyLoginContainer from '../components/auth/DummyLoginContainer'
 import MessagesTabContainer from '../components/messages/MessagesTabContainer'
@@ -46,6 +47,7 @@ export const StackRouteConfigs = {
   Message: { screen: MessageThreadContainer },
   Signup: { screen: SignupContainer },
   Welcome: { screen: WelcomeContainer },
+  ChangeAvatar: { screen: ChangeAvatarContainer },
   ChangePassword: { screen: ChangePasswordContainer}
 }
 

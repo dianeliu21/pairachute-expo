@@ -25,7 +25,7 @@ class PromptResponse extends Component {
     }
 
     this.prompt = this.props.data.promptInfo.message.length > 100 ? '"' + this.props.data.promptInfo.message.substr(0, 100) + '..."' : '"' + this.props.data.promptInfo.message + '"'
-    this.senderName = this.props.users[this.props.data.responseInfo.senderId]
+    this.senderName = this.props.users[this.props.data.responseInfo.senderId].name
   }
 
   _changeModalVisibility (visible) {
