@@ -147,11 +147,8 @@ class Prompt extends Component {
   }
 
   _renderPromptDate () {
-    timestamp = (new Date(this.props.data.timestamp)).toString()
-    day = timestamp.slice(0,3)
-    date = timestamp.slice(4,10)
-    yearTime = timestamp.slice(11,21)
-    return(day + ", " + date + ", " + yearTime)
+    timestamp = this.props.data.timestamp
+    return Date(timestamp * 1000).toString().slice(0,10);
   }
 
   render () {

@@ -1,6 +1,6 @@
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { navToChangeAvatar, navToChangePassword } from '../../actions/authActions'
+import { navToChangePassword } from '../../actions/authActions'
 
 import Settings from './Settings'
 
@@ -12,7 +12,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
-    navToChangeAvatar,
     navToChangePassword
   }, dispatch)
 }

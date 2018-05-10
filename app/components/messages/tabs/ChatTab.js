@@ -24,7 +24,6 @@ class ChatTab extends Component {
   render () {
     return (
       <View style={styles.wrapper}>
-        {console.log(this.props.chatOnlyThread)}
         {this.props.chatOnlyThread.isReady
           ? (<MessageThread
               user={this.props.user}
