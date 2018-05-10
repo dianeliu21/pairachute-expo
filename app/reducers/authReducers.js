@@ -30,10 +30,25 @@ export function authState (state = initialAuthState, action) {
         isAuthenticated: false,
         isPending: false
       })
+    case types.CHANGE_AVATAR_ATTEMPT:
+      return Object.assign({}, state, {
+        changeAvatarSuccessMessage: '',
+        changeAvatarFailureMessage: ''
+      })
+    case types.CHANGE_AVATAR_SUCCESS:
+      return Object.assign({}, state, {
+        changeAvatarSuccessMessage: action.successMessage,
+        changeAvatarFailureMessage: ''
+      })
+    case types.CHANGE_AVATAR_FAILURE:
+      return Object.assign({}, state, {
+        changeAvatarFailureMessage: action.errorMessage,
+        changeAvatarSuccessMessage: ''
+      })
     case types.CHANGE_PASSWORD_ATTEMPT:
       return Object.assign({}, state, {
-        changePasswordSuccessMessage: '',
-        changePasswordFailureMessage: ''
+        changeAvatarSuccessMessage: '',
+        changeAvatarFailureMessage: ''
       })
     case types.CHANGE_PASSWORD_SUCCESS:
       return Object.assign({}, state, {
@@ -60,6 +75,7 @@ export function user (state = {}, action) {
         displayName: action.user.displayName,
         email: action.user.email,
         emailVerified: action.user.emailVerified,
+        avatarIndex: action.user.avatarIndex,
         providerData: action.user.providerData,
         refreshToken: action.user.refreshToken,
         reflectionType: action.user.reflectionType,

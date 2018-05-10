@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import {
+  Image,
   Text,
   TouchableHighlight,
   View
@@ -8,12 +9,54 @@ import MaterialInitials from 'react-native-material-initials/native'
 import * as constants from '../../../styles/constants.js'
 const styles = require('../../../styles/styles.js')
 
+const avatarNeutral = require('../../../../resources/avatars/avatar_general.png')
+const avatarImages = [
+  // Women straight hair
+  require('../../../../resources/avatars/avatar_female_straight_black.png'),
+  require('../../../../resources/avatars/avatar_female_straight_black_glasses.png'),
+  require('../../../../resources/avatars/avatar_brown_female_straight_black.png'),
+  require('../../../../resources/avatars/avatar_brown_female_straight_black_glasses.png'),
+  require('../../../../resources/avatars/avatar_female_straight_brunette.png'),
+  require('../../../../resources/avatars/avatar_female_straight_brunette_glasses.png'),
+  require('../../../../resources/avatars/avatar_female_straight_blond.png'),
+  require('../../../../resources/avatars/avatar_female_straight_blond_glasses.png'),
+
+  // Women braided hair
+  require('../../../../resources/avatars/avatar_white_female_braided_black.png'),
+  require('../../../../resources/avatars/avatar_white_female_braided_black_glasses.png'),
+  require('../../../../resources/avatars/avatar_brown_female_braided_black.png'),
+  require('../../../../resources/avatars/avatar_brown_female_braided_black_glasses.png'),
+  require('../../../../resources/avatars/avatar_white_female_braided_brunette.png'),
+  require('../../../../resources/avatars/avatar_white_female_braided_brunette_glasses.png'),
+  require('../../../../resources/avatars/avatar_white_female_braided_blond.png'),
+  require('../../../../resources/avatars/avatar_white_female_braided_blond_glasses.png'),
+
+  // Men short hair
+  require('../../../../resources/avatars/avatar_white_short_black.png'),
+  require('../../../../resources/avatars/avatar_white_short_black_glasses.png'),
+  require('../../../../resources/avatars/avatar_brown_short_black.png'),
+  require('../../../../resources/avatars/avatar_brown_short_black_glasses.png'),
+  require('../../../../resources/avatars/avatar_white_short_brunette.png'),
+  require('../../../../resources/avatars/avatar_white_short_brunette_glasses.png'),
+  require('../../../../resources/avatars/avatar_white_short_blond.png'),
+  require('../../../../resources/avatars/avatar_white_short_blond_glasses.png'),
+
+  // Men long hair
+  require('../../../../resources/avatars/avatar_white_long_black.png'),
+  require('../../../../resources/avatars/avatar_white_long_black_glasses.png'),
+  require('../../../../resources/avatars/avatar_white_long_brunette.png'),
+  require('../../../../resources/avatars/avatar_white_long_brunette_glasses.png'),
+  require('../../../../resources/avatars/avatar_white_long_blond.png'),
+  require('../../../../resources/avatars/avatar_white_long_blond_glasses.png')
+]
+
 class MessageBubble extends Component {
   constructor (props) {
     super(props)
     this.state = {
       bubblePressed: false
     }
+    this.sender = this.props.users[this.props.message.senderId]
     // state variables
     this.isOwnMessage = this.props.message.senderId === this.props.senderId
     this.isSameSenderAsNext = this.props.message.senderId === this.props.message.nextSenderId
@@ -27,13 +70,14 @@ class MessageBubble extends Component {
     // components
     this.date = this._renderDate()
     this.isSameDayAsNext = !this._notSameDayAsNext()
+    //this.avatarImage = this.sender.avatarIndex ? avatarImages[this.sender.avatarIndex] : avatarNeutral
     this.avatar = !this.isOwnMessage && (!this.isSameSenderAsNext || (this.isSameSenderAsNext && !this.isSameDayAsNext))
-      ? (<MaterialInitials backgroundColor={constants.mediumGray} color={'white'} single={false} size={constants.messageAvatarSize} style={styles.messageAvatar} text={this.props.users[this.props.message.senderId] || ''} />)
+      ? (<Image style={[styles.messageAvatar, styles.messageAvatarImage]} source={avatarNeutral}/>)
       // ? null
       : null
 
     this.senderName = !this.isOwnMessage && (!this.isSameSenderAsPrev || this.date !== null)
-     ? (<Text style={styles.receivedMessageSender}>{this.props.users[this.props.message.senderId]}</Text>)
+     ? (<Text style={styles.receivedMessageSender}>{this.sender}</Text>)
      : null
 
     this.wrapperStyle = !this.isOwnMessage ? !this.isSameSenderAsNext || this.avatar !== null ? [styles.receivedMsgBubbleWrapper, styles.receivedMsgWithAvatar] : [styles.receivedMsgBubbleWrapper] : styles.sentMsgBubbleWrapper

@@ -78,7 +78,7 @@ class Login extends Component {
           >
             <Image
               style={{width: 200, height: 200}}
-              source={require('./../../../resources/pairachute_graphic.png')}>
+              source={require('./../../../resources/pairachute_logo.png')}>
             </Image>
             <Text style={styles.authErrorText}>{this.props.authState.errorMessage}</Text>
             <TextInput
