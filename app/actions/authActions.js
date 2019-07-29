@@ -1,7 +1,8 @@
 import * as types from './actionTypes'
 import { NavigationActions } from 'react-navigation'
 import fb from '../config/initializeFirebase'
-import { Permissions, Notifications } from 'expo';
+import { Notifications } from 'expo';
+import * as Permissions from 'expo-permissions';
 var db = fb.database()
 
 var reactNative = require('react-native');
@@ -18,19 +19,20 @@ export function login (email, password) {
         ['password', password]
       ]);
       let response = await fb.auth().signInWithEmailAndPassword(email, password)
-      let userInfo = ( await db.ref('/users/' + response.uid).once('value') ).val()
+      let responseUser = response.user
+      let userInfo = ( await db.ref('/users/' + responseUser.uid).once('value') ).val()
       var user = {
-        displayName: response.displayName || userInfo.displayName,
+        displayName: responseUser.displayName || userInfo.displayName,
         email: response.email || userInfo.email,
-        emailVerified: response.emailVerified,
+        emailVerified: responseUser.emailVerified,
         avatarIndex: userInfo.avatarIndex,
         firstName: userInfo.firstName,
-        providerData: response.providerData,
-        refreshToken: response.refreshToken,
+        providerData: responseUser.providerData,
+        refreshToken: responseUser.refreshToken,
         reflectionType: userInfo.reflectionType,
         showWelcome: userInfo.showWelcome,
         threads: userInfo.threads,
-        uid: response.uid
+        uid: responseUser.uid
       }
       dispatch(loginSuccess(user))
       if (userInfo.reflectionType === 'paired') {

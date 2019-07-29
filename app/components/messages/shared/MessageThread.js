@@ -50,7 +50,9 @@ class MessageThread extends Component {
 
   _sendMessage () {
     this.props.sendMessage(this.state.messageText, this.props.user.uid, this.props.user.displayName, this.props.focusedThread.id)
-    this._toggleEncouragement()
+    if (this.state.focusedPrompt) {
+      this._toggleEncouragement()
+    }
     this.setState({ messageText: '' })
   }
 
